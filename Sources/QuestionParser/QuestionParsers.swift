@@ -99,13 +99,13 @@ public struct QuestionParsers {
     //   - "Obama's children's mothers"
 
     public static let namedValues: Parser<Value, Token> = {
-        let moreNamedValues: Parser<[Value], Token> =
-            (POS.possessive ~> namedValue).rep()
+        let moreNamedValues: Parser<[(Token, Value)], Token> =
+            (POS.possessive ~ namedValue).rep()
         return (namedValue ~~ moreNamedValues) ^^ {
-            (first, rest) in
-
-            return rest.reduce(first) { result, namedValue in
-                .relationship(namedValue, result)
+            let (first, rest) = $0
+            return rest.reduce(first) { result, more in
+                let (token, namedValue) = more
+                return .relationship(namedValue, result, token: token)
             }
         }
     }()

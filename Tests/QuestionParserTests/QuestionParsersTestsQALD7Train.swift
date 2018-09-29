@@ -228,7 +228,8 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                         name: [t("did", "VBD", "do"), t("study", "VB", "study")],
                         filter: .plain(.relationship(
                             .named([t("wife", "NN", "wife")]),
-                            .named([t("Obama", "NNP", "obama")])
+                            .named([t("Obama", "NNP", "obama")]),
+                            token: t("'s", "POS", "'s")
                         ))
                     )
                 )
@@ -567,7 +568,8 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                             modifier: [t("for", "IN", "for")],
                             value: .relationship(
                                 .named([t("Titanic", "NNP", "titanic")]),
-                                .named([t("Cameron", "NNP", "cameron")])
+                                .named([t("Cameron", "NNP", "cameron")]),
+                                token: t("'s", "POS", "'s")
                             )
                         )
                     )
@@ -776,7 +778,8 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                                     t("Foundation", "NNP", "foundation"),
                                     t("series", "NN", "series")
                                 ]),
-                                .named([t("Asimov", "NNP", "asimov")])
+                                .named([t("Asimov", "NNP", "asimov")]),
+                                token: t("'s", "POS", "'s")
                             )
                         )
                     )

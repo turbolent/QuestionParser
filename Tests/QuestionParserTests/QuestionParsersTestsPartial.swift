@@ -161,8 +161,10 @@ final class QuestionParsersTestsPartial: XCTestCase {
                           .named([t("mothers", "NNS", "mother")]),
                           .relationship(
                               .named([t("children", "NNS", "child")]),
-                              .named([t("Obama", "NNP", "obama")])
-                          )
+                              .named([t("Obama", "NNP", "obama")]),
+                              token: t("'s", "POS", "'s")
+                          ),
+                          token: t("'s", "POS", "'s")
                       ),
                       t("Obama", "NNP", "obama"),
                       t("'s", "POS", "'s"),

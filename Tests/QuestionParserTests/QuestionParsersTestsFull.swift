@@ -1208,7 +1208,8 @@ final class QuestionParsersTestsFull: XCTestCase {
                             .named([
                                 t("Bill", "NNP", "bill"),
                                 t("Clinton", "NNP", "clinton")
-                            ])
+                            ]),
+                            token: t("'s", "POS", "'s")
                         )
                     )
                 )
@@ -1671,13 +1672,16 @@ final class QuestionParsersTestsFull: XCTestCase {
                     .named([t("actor", "NN", "actor")]),
                     property: .withFilter(
                         name: [t("married", "VBD", "marry")],
-                        filter: .plain(.relationship(
-                            .named([t("sister", "NN", "sister")]),
-                            .named([
-                                t("John", "NNP", "john"),
-                                t("F.", "NNP", "f."),
-                                t("Kennedy", "NNP", "kennedy")
-                            ]))
+                        filter: .plain(
+                            .relationship(
+                                .named([t("sister", "NN", "sister")]),
+                                .named([
+                                    t("John", "NNP", "john"),
+                                    t("F.", "NNP", "f."),
+                                    t("Kennedy", "NNP", "kennedy")
+                                ]),
+                                token: t("'s", "POS", "'s")
+                            )
                         )
                     )
                 )
@@ -2280,7 +2284,8 @@ final class QuestionParsersTestsFull: XCTestCase {
                             modifier: [t("for", "IN", "for")],
                             value: .relationship(
                                 .named([t("List", "NN", "list")]),
-                                .named([t("Schindler", "NNP", "schindler")])
+                                .named([t("Schindler", "NNP", "schindler")]),
+                                token: t("'s", "POS", "'s")
                             )
                         )
                     )
