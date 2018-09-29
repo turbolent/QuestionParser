@@ -101,7 +101,7 @@ public struct QuestionParsers {
     public static let namedValues: Parser<Value, Token> = {
         let moreNamedValues: Parser<[(Token, Value)], Token> =
             (POS.possessive ~ namedValue).rep()
-        return (namedValue ~~ moreNamedValues) ^^ {
+        return (namedValue ~ moreNamedValues) ^^ {
             let (first, rest) = $0
             return rest.reduce(first) { result, more in
                 let (token, namedValue) = more
