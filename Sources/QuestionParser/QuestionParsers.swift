@@ -356,7 +356,7 @@ public struct QuestionParsers {
                 Query.relationship(b, a, token: sep)
             }
         }
-        return queries.chainLeft(separator, min: 1).map { $0! }
+        return queries.chainLeft(separator: separator, min: 1).map { $0! }
     }()
 
     // Examples:
