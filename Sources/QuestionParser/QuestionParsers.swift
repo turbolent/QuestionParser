@@ -87,7 +87,7 @@ public struct QuestionParsers {
     //   - "two million inhabitants"
 
     public static let numericValue: Parser<Value, Token> =
-        (POS.numbers ~ POS.nouns.opt()) ^^ {
+        (POS.numbers ~ named.opt()) ^^ {
             (numbers, optUnit) in
             return optUnit
                 .map { .number(numbers, unit: $0) }
@@ -233,7 +233,7 @@ public struct QuestionParsers {
     }
 
     public static let propertyAdjectiveSuffix: Parser<([Token], Filter) -> Property, Token> =
-        POS.strictAdjective ^^ { adjective in
+        (POS.strictAdjective <~ notFollowedBy(POS.noun)) ^^ { adjective in
             return { (verbs, filter) in
                 .adjectiveWithFilter(
                     name: verbs + [adjective],

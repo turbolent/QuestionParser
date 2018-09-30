@@ -2428,9 +2428,15 @@ final class QuestionParsersTestsFull: XCTestCase {
                 .withProperty(
                     .named([t("mountains", "NNS", "mountain")]),
                     property: .adjectiveWithFilter(
-                        name: [t("are", "VBP", "be"), t("high", "JJ", "high")],
+                        name: [
+                            t("are", "VBP", "be"),
+                            t("high", "JJ", "high")
+                        ],
                         filter: .withComparativeModifier(
-                            modifier: [t("more", "JJR", "more"), t("than", "IN", "than")],
+                            modifier: [
+                                t("more", "JJR", "more"),
+                                t("than", "IN", "than")
+                            ],
                             value: .number(
                                 [t("1000", "CD", "1000")],
                                 unit: [t("meters", "NNS", "meter")]

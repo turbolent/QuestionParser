@@ -205,7 +205,6 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
 
     func testQ8() {
 
-        // TODO:
         // Give me all cities in New Jersey with more than 100000 inhabitants.
 
         expectQuestionSuccess(
@@ -543,35 +542,28 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
 
     func testQ18() {
 
-        // TODO: improve
-
         // Which countries have more than two official languages?
 
         expectQuestionSuccess(
             .other(
                 .withProperty(
                     .named([t("countries", "NNS", "country")]),
-                    property: .and([
-                        .adjectiveWithFilter(
-                            name: [
-                                t("have", "VBP", "have"),
-                                t("official", "JJ", "official")
+                    property: .withFilter(
+                        name: [t("have", "VBP", "have")],
+                        filter: .withComparativeModifier(
+                            modifier: [
+                                t("more", "JJR", "more"),
+                                t("than", "IN", "than")
                             ],
-                            filter: .withComparativeModifier(
-                                modifier: [
-                                    t("more", "JJR", "more"),
-                                    t("than", "IN", "than")
-                                ],
-                                value: .number([t("two", "CD", "two")])
+                            value: .number(
+                                [t("two", "CD", "two")],
+                                unit: [
+                                    t("official", "JJ", "official"),
+                                    t("languages", "NNS", "language")
+                                ]
                             )
-                        ),
-                        .withFilter(
-                            name: [],
-                            filter: .plain(.named([
-                                t("languages", "NNS", "language")
-                            ]))
                         )
-                    ])
+                    )
                 )
             ),
             t("Which", "WDT", "which"),
