@@ -25,23 +25,42 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
 
     func testQ2() {
 
-        // TODO:
-//
-//        // Who is the daughter of Robert Kennedy married to?
-//
-//        expectQuestionSuccess(
-//            .other(.named([])),
-//            t("Who", "WP", "who"),
-//            t("is", "VBZ", "be"),
-//            t("the", "DT", "the"),
-//            t("daughter", "NN", "daughter"),
-//            t("of", "IN", "of"),
-//            t("Robert", "NNP", "robert"),
-//            t("Kennedy", "NNP", "kennedy"),
-//            t("married", "VBD", "marry"),
-//            t("to", "IN", "to"),
-//            t("?", ".", "?")
-//        )
+        // Who is the daughter of Robert Kennedy married to?
+
+        expectQuestionSuccess(
+            .person(
+                .inverseWithFilter(
+                    name: [
+                        t("is", "VBZ", "be"),
+                        t("married", "VBD", "marry"),
+                        t("to", "IN", "to")
+                    ],
+                    filter: .plain(
+                        .relationship(
+                            .named([
+                                t("the", "DT", "the"),
+                                t("daughter", "NN", "daughter")
+                            ]),
+                            .named([
+                                t("Robert", "NNP", "robert"),
+                                t("Kennedy", "NNP", "kennedy")
+                            ]),
+                            token: t("of", "IN", "of")
+                        )
+                    )
+                )
+            ),
+            t("Who", "WP", "who"),
+            t("is", "VBZ", "be"),
+            t("the", "DT", "the"),
+            t("daughter", "NN", "daughter"),
+            t("of", "IN", "of"),
+            t("Robert", "NNP", "robert"),
+            t("Kennedy", "NNP", "kennedy"),
+            t("married", "VBD", "marry"),
+            t("to", "IN", "to"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ3() {
