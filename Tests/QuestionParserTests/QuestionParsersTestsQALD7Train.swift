@@ -2074,23 +2074,32 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ75() {
 
-        // TODO: seemd to need a fix in inversePropertySuffix
+        // Who was Vincent van Gogh inspired by?
 
-//        // Who was Vincent van Gogh inspired by?
-//
-//        expectQuestionSuccess(
-//            .other(
-//                //
-//            ),
-//            t("Who", "WP", "who"),
-//            t("was", "VBD", "be"),
-//            t("Vincent", "NNP", "vincent"),
-//            t("van", "NNP", "van"),
-//            t("Gogh", "NNP", "gogh"),
-//            t("inspired", "VBN", "inspire"),
-//            t("by", "IN", "by"),
-//            t("?", ".", "?")
-//        )
+        expectQuestionSuccess(
+            .person(
+                .inverseWithFilter(
+                    name: [
+                        t("was", "VBD", "be"),
+                        t("inspired", "VBN", "inspire"),
+                        t("by", "IN", "by")
+                    ],
+                    filter: .plain(.named([
+                        t("Vincent", "NNP", "vincent"),
+                        t("van", "NNP", "van"),
+                        t("Gogh", "NNP", "gogh")
+                    ]))
+                )
+            ),
+            t("Who", "WP", "who"),
+            t("was", "VBD", "be"),
+            t("Vincent", "NNP", "vincent"),
+            t("van", "NNP", "van"),
+            t("Gogh", "NNP", "gogh"),
+            t("inspired", "VBN", "inspire"),
+            t("by", "IN", "by"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ76() {
