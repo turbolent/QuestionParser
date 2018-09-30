@@ -618,31 +618,33 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
 
     func testQ19() {
 
-        // TODO: add support for HYPH
+        // Who is the owner of Rolls-Royce?
 
-//        // Who is the owner of Rolls-Royce?
-//
-//        expectQuestionSuccess(
-//            .other(
-//                .relationship(
-//                    .named([
-//                        t("the", "DT", "the"),
-//                        t("owner", "NN", "owner")
-//                    ]),
-//                    .named([t("Rolls", "NNP", "rolls")]),
-//                    token: t("of", "IN", "of")
-//                )
-//            ),
-//            t("Who", "WP", "who"),
-//            t("is", "VBZ", "be"),
-//            t("the", "DT", "the"),
-//            t("owner", "NN", "owner"),
-//            t("of", "IN", "of"),
-//            t("Rolls", "NNP", "rolls"),
-//            t("-", "HYPH", "-"),
-//            t("Royce", "NNP", "royce"),
-//            t("?", ".", "?")
-//        )
+        expectQuestionSuccess(
+            .other(
+                .relationship(
+                    .named([
+                        t("the", "DT", "the"),
+                        t("owner", "NN", "owner")
+                    ]),
+                    .named([
+                        t("Rolls", "NNP", "rolls"),
+                        t("-", "HYPH", "-"),
+                        t("Royce", "NNP", "royce")
+                    ]),
+                    token: t("of", "IN", "of")
+                )
+            ),
+            t("Who", "WP", "who"),
+            t("is", "VBZ", "be"),
+            t("the", "DT", "the"),
+            t("owner", "NN", "owner"),
+            t("of", "IN", "of"),
+            t("Rolls", "NNP", "rolls"),
+            t("-", "HYPH", "-"),
+            t("Royce", "NNP", "royce"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ20() {

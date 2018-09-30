@@ -55,5 +55,8 @@ public struct POSParsers {
 
     public static let anyAdverb =
         TP.pos("RB", strict: false)
+
+    public static let hyphen =
+        TP.pos("HYPH", strict: true)
 }
 

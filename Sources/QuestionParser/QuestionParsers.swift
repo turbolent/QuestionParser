@@ -53,6 +53,7 @@ public struct QuestionParsers {
     //   - "the 19th century"
     //   - "green paintings"
     //   - "people"
+    //   - "a Canadian"
 
     // Note: disambiguate/extract superlative and adjective in later stage,
     //       might either be named entity or specific type
@@ -70,11 +71,21 @@ public struct QuestionParsers {
             }
     }
 
+    public static let hyphenSeparator: Parser<([Token], [Token]) -> [Token], Token> =
+        POS.hyphen ^^ { hyphen in
+            { (a, b) in
+                a + [hyphen] + b
+            }
+        }
+
+    public static let hyphenedNouns: Parser<[Token], Token> =
+        POS.nouns.chainLeft(separator: hyphenSeparator, min: 1).map { $0! }
+
     public static let nounsNamed: Parser<[Token], Token> =
         (POS.determiner.opt() ^^ { $0.map { [$0] } ?? [] })
             ~ (POS.anyAdverb.opt() ^^ { $0.map { [$0] } ?? [] })
             ~ adjectives
-            ~ POS.nouns
+            ~ hyphenedNouns
 
     public static let adjectiveNamed: Parser<[Token], Token> =
         POS.determiner ~ adjectives
