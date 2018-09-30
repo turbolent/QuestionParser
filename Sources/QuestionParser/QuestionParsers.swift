@@ -319,22 +319,24 @@ public struct QuestionParsers {
     // Examples:
     //   - "children and grandchildren"
     //   - "China, the USA, and Japan"
-    // TODO: maybe just use commaOrAndList
-    // TODO: differentiate "and" and "or"?!
-    // TODO: handling nesting of "and" and "or"
 
-    public static let queriesSeparator: Parser<Unit, Token> =
-        (TP.comma.ignored() ~ POS.coordinatingConjunction.opt().ignored())
-            || (TP.comma.opt().ignored() ~ POS.coordinatingConjunction.ignored())
+    private static func reduceQueries(queries: [Query]) -> Query {
+        return .and(queries.flatMap { (query: Query) -> [Query] in
+            if case let .and(queries) = query {
+                return queries
+            } else {
+                return [query]
+            }
+        })
+    }
 
     public static let queries: Parser<Query, Token> =
-        query.rep(separator: queriesSeparator, min: 1) ^^ { (queries: [Query]) in
-            if queries.count == 1, let query = queries.first {
-                return query
-            } else {
-                return .and(queries)
-            }
-        }
+        TP.commaOrAndList(
+            parser: query,
+            andReducer: reduceQueries,
+            orReducer: reduceQueries,
+            andOptional: false
+    )
 
     // Examples:
     //   - "Clinton"
