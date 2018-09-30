@@ -383,27 +383,45 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
 
     func testQ12() {
 
-        // TODO:
+        // TODO improve
 
-//        // Which mountain is the highest after the Annapurna?
-//
-//        expectQuestionSuccess(
-//            .other(
-//                .withProperty(
-//                    .named([t("mountain", "NN", "mountain")]),
-//                    property: .named([t("is", "VBZ", "be")])
-//                )
-//            ),
-//            t("Which", "WDT", "which"),
-//            t("mountain", "NN", "mountain"),
-//            t("is", "VBZ", "be"),
-//            t("the", "DT", "the"),
-//            t("highest", "JJS", "high"),
-//            t("after", "IN", "after"),
-//            t("the", "DT", "the"),
-//            t("Annapurna", "NNP", "annapurna"),
-//            t("?", ".", "?")
-//        )
+        // Which mountain is the highest after the Annapurna?
+
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([t("mountain", "NN", "mountain")]),
+                    property: .and([
+                        .withFilter(
+                            name: [t("is", "VBZ", "be")],
+                            filter: .plain(.named([
+                                t("the", "DT", "the"),
+                                t("highest", "JJS", "high")
+                            ]))
+                        ),
+                        .withFilter(
+                            name: [],
+                            filter: .withModifier(
+                                modifier: [t("after", "IN", "after")],
+                                value: .named([
+                                    t("the", "DT", "the"),
+                                    t("Annapurna", "NNP", "annapurna")
+                                ])
+                            )
+                        )
+                    ])
+                )
+            ),
+            t("Which", "WDT", "which"),
+            t("mountain", "NN", "mountain"),
+            t("is", "VBZ", "be"),
+            t("the", "DT", "the"),
+            t("highest", "JJS", "high"),
+            t("after", "IN", "after"),
+            t("the", "DT", "the"),
+            t("Annapurna", "NNP", "annapurna"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ13() {
