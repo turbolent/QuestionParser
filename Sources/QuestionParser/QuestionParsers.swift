@@ -70,11 +70,18 @@ public struct QuestionParsers {
             }
     }
 
-    public static let named: Parser<[Token], Token> =
+    public static let nounsNamed: Parser<[Token], Token> =
         (POS.determiner.opt() ^^ { $0.map { [$0] } ?? [] })
             ~ (POS.anyAdverb.opt() ^^ { $0.map { [$0] } ?? [] })
             ~ adjectives
             ~ POS.nouns
+
+    public static let adjectiveNamed: Parser<[Token], Token> =
+        POS.determiner ~ adjectives
+
+    public static let named: Parser<[Token], Token> =
+        nounsNamed
+        || adjectiveNamed
 
     public static let simpleNamedValue: Parser<Value, Token> =
         named ^^ Value.named

@@ -644,29 +644,36 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
 
     func testQ21() {
 
-        // TODO:
+        // Which politicians were married to a German?
 
-//        // Which politicians were married to a German?
-//
-//        expectQuestionSuccess(
-//            .other(
-//                .withProperty(
-//                    .named([t("politicians", "NNS", "politician")]),
-//                    property: .named([
-//                        t("were", "VBD", "be"),
-//                        t("married", "VBN", "marry")
-//                    ])
-//                )
-//            ),
-//            t("Which", "WDT", "which"),
-//            t("politicians", "NNS", "politician"),
-//            t("were", "VBD", "be"),
-//            t("married", "VBN", "marry"),
-//            t("to", "IN", "to"),
-//            t("a", "DT", "a"),
-//            t("German", "JJ", "german"),
-//            t("?", ".", "?")
-//        )
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([t("politicians", "NNS", "politician")]),
+                    property: .withFilter(
+                        name: [
+                            t("were", "VBD", "be"),
+                            t("married", "VBN", "marry")
+                        ],
+                        filter: .withModifier(
+                            modifier: [t("to", "IN", "to")],
+                            value: .named([
+                                t("a", "DT", "a"),
+                                t("German", "JJ", "german")
+                            ])
+                        )
+                    )
+                )
+            ),
+            t("Which", "WDT", "which"),
+            t("politicians", "NNS", "politician"),
+            t("were", "VBD", "be"),
+            t("married", "VBN", "marry"),
+            t("to", "IN", "to"),
+            t("a", "DT", "a"),
+            t("German", "JJ", "german"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ22() {
