@@ -678,20 +678,28 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ23() {
 
-        // TODO:
-//        // What country is Sitecore from?
-//
-//        expectQuestionSuccess(
-//            .other(
-//                //
-//            ),
-//            t("What", "WP", "what"),
-//            t("country", "NN", "country"),
-//            t("is", "VBZ", "be"),
-//            t("Sitecore", "NNP", "sitecore"),
-//            t("from", "IN", "from"),
-//            t("?", ".", "?")
-//        )
+        // What country is Sitecore from?
+
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([t("country", "NN", "country")]),
+                    property: .inverseWithFilter(
+                        name: [
+                            t("is", "VBZ", "be"),
+                            t("from", "IN", "from")
+                        ],
+                        filter: .plain(.named([t("Sitecore", "NNP", "sitecore")]))
+                    )
+                )
+            ),
+            t("What", "WP", "what"),
+            t("country", "NN", "country"),
+            t("is", "VBZ", "be"),
+            t("Sitecore", "NNP", "sitecore"),
+            t("from", "IN", "from"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ24() {
@@ -869,46 +877,88 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ30() {
 
-        // TODO:
-//        // In which city are the headquarters of the United Nations?
-//
-//        expectQuestionSuccess(
-//            .other(
-//                // ...
-//            ),
-//            t("In", "IN", "in"),
-//            t("which", "WDT", "which"),
-//            t("city", "NN", "city"),
-//            t("are", "VBP", "be"),
-//            t("the", "DT", "the"),
-//            t("headquarters", "NN", "headquarters"),
-//            t("of", "IN", "of"),
-//            t("the", "DT", "the"),
-//            t("United", "NNP", "united"),
-//            t("Nations", "NNP", "nations"),
-//            t("?", ".", "?")
-//        )
+        // In which city are the headquarters of the United Nations?
+
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([t("city", "NN", "city")]),
+                    property: .inverseWithFilter(
+                        name: [
+                            t("are", "VBP", "be"),
+                            t("in", "IN", "in")
+                        ],
+                        filter: .plain(
+                            .relationship(
+                                .named([
+                                    t("the", "DT", "the"),
+                                    t("headquarters", "NN", "headquarters")
+                                ]),
+                                .named([
+                                    t("the", "DT", "the"),
+                                    t("United", "NNP", "united"),
+                                    t("Nations", "NNP", "nations")
+                                ]),
+                                token: t("of", "IN", "of")
+                            )
+                        )
+                    )
+                )
+            ),
+            t("In", "IN", "in"),
+            t("which", "WDT", "which"),
+            t("city", "NN", "city"),
+            t("are", "VBP", "be"),
+            t("the", "DT", "the"),
+            t("headquarters", "NN", "headquarters"),
+            t("of", "IN", "of"),
+            t("the", "DT", "the"),
+            t("United", "NNP", "united"),
+            t("Nations", "NNP", "nations"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ31() {
 
-        // TODO:
+        // In which city was the president of Montenegro born?
 
-//        // In which city was the president of Montenegro born?
-//
-//        expectQuestionSuccess(
-//            .other(.named([])),
-//            t("In", "IN", "in"),
-//            t("which", "WDT", "which"),
-//            t("city", "NN", "city"),
-//            t("was", "VBD", "be"),
-//            t("the", "DT", "the"),
-//            t("president", "NN", "president"),
-//            t("of", "IN", "of"),
-//            t("Montenegro", "NNP", "montenegro"),
-//            t("born", "VBN", "bear"),
-//            t("?", ".", "?")
-//        )
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([t("city", "NN", "city")]),
+                    property: .inverseWithFilter(
+                        name: [
+                            t("was", "VBD", "be"),
+                            t("born", "VBN", "bear"),
+                            t("in", "IN", "in")
+                        ],
+                        filter: .plain(
+                            .relationship(
+                                .named([
+                                    t("the", "DT", "the"),
+                                    t("president", "NN", "president")
+                                ]),
+                                .named([
+                                    t("Montenegro", "NNP", "montenegro")
+                                ]),
+                                token: t("of", "IN", "of")
+                            )
+                        )
+                    )
+                )
+            ),
+            t("In", "IN", "in"),
+            t("which", "WDT", "which"),
+            t("city", "NN", "city"),
+            t("was", "VBD", "be"),
+            t("the", "DT", "the"),
+            t("president", "NN", "president"),
+            t("of", "IN", "of"),
+            t("Montenegro", "NNP", "montenegro"),
+            t("born", "VBN", "bear"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ32() {
