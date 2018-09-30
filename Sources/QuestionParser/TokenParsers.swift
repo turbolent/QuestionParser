@@ -35,6 +35,10 @@ public struct TokenParsers {
         return moreWords.reduce(word(firstWord)) { $0 || word($1) }
     }
 
+    public static func words(_ firstWord: String, _ moreWords: String...) -> Parser<[Token], Token> {
+        return moreWords.reduce(word(firstWord).map { [$0] }) { $0 ~ word($1) }
+    }
+
     public static let and = word("and")
     public static let or = word("or")
     public static let comma = word(",")
@@ -47,9 +51,12 @@ public struct TokenParsers {
     )
         -> Parser<T, Token>
     {
+        let andVariants = and
+                || words("as", "well", "as")
+
         let andSeparator = andOptional
-            ? and.opt().ignored()
-            : and.ignored()
+            ? andVariants.opt().ignored()
+            : andVariants.ignored()
 
         let andParser: Parser<T, Token> =
             parser.rep(separator: andSeparator, min: 1) ^^ { (items: [T]) in

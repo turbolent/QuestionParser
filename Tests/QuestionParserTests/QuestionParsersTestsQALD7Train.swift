@@ -1452,25 +1452,47 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ54() {
 
-        // TODO:
-//        // In which films did Julia Roberts as well as Richard Gere play?
-//
-//        expectQuestionSuccess(
-//            .other(.named([])),
-//            t("In", "IN", "in"),
-//            t("which", "WDT", "which"),
-//            t("films", "NNS", "film"),
-//            t("did", "VBD", "do"),
-//            t("Julia", "NNP", "julia"),
-//            t("Roberts", "NNP", "roberts"),
-//            t("as", "RB", "as"),
-//            t("well", "RB", "well"),
-//            t("as", "IN", "as"),
-//            t("Richard", "NNP", "richard"),
-//            t("Gere", "NNP", "gere"),
-//            t("play", "VB", "play"),
-//            t("?", ".", "?")
-//        )
+        // In which films did Julia Roberts as well as Richard Gere play?
+
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([t("films", "NNS", "film")]),
+                    property: .inverseWithFilter(
+                        name: [
+                            t("did", "VBD", "do"),
+                            t("play", "VB", "play"),
+                            t("in", "IN", "in")
+                        ],
+                        filter: .plain(
+                            .and([
+                                .named([
+                                    t("Julia", "NNP", "julia"),
+                                    t("Roberts", "NNP", "roberts")
+                                ]),
+                                .named([
+                                    t("Richard", "NNP", "richard"),
+                                    t("Gere", "NNP", "gere")
+                                ])
+                            ])
+                        )
+                    )
+                )
+            ),
+            t("In", "IN", "in"),
+            t("which", "WDT", "which"),
+            t("films", "NNS", "film"),
+            t("did", "VBD", "do"),
+            t("Julia", "NNP", "julia"),
+            t("Roberts", "NNP", "roberts"),
+            t("as", "RB", "as"),
+            t("well", "RB", "well"),
+            t("as", "IN", "as"),
+            t("Richard", "NNP", "richard"),
+            t("Gere", "NNP", "gere"),
+            t("play", "VB", "play"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ55() {
