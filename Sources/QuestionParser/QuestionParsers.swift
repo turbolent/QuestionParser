@@ -76,8 +76,18 @@ public struct QuestionParsers {
             ~ adjectives
             ~ POS.nouns
 
-    public static let namedValue: Parser<Value, Token> =
+    public static let simpleNamedValue: Parser<Value, Token> =
         named ^^ Value.named
+
+    public static let namedValue: Parser<Value, Token> =
+        (simpleNamedValue ~ (TP.word("of") ~ simpleNamedValue).opt()) ^^ {
+            switch $0 {
+            case let (first, (token, second)?):
+                return Value.relationship(first, second, token: token)
+            case (let first, nil):
+                return first
+            }
+        }
 
     // Examples:
     //   - "100"

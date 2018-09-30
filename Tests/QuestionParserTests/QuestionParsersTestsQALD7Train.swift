@@ -258,16 +258,7 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 //
 //        expectQuestionSuccess(
 //            .other(
-//                .withProperty(
-//                    .named([t("school", "NN", "school")]),
-//                    property: .inverseWithFilter(
-//                        name: [t("did", "VBD", "do"), t("study", "VB", "study")],
-//                        filter: .plain(.relationship(
-//                            .named([t("wife", "NN", "wife")]),
-//                            .named([t("Obama", "NNP", "obama")])
-//                            ))
-//                    )
-//                )
+//                // ...
 //            ),
 //            t("Where", "WRB", "where"),
 //            t("does", "VBZ", "do"),
@@ -304,22 +295,39 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ11() {
 
-        // TODO:
-//        // Who played Gus Fring in Breaking Bad?
-//
-//        expectQuestionSuccess(
-//            .person(
-//
-//            ),
-//            t("Who", "WP", "who"),
-//            t("played", "VBD", "play"),
-//            t("Gus", "NNP", "gus"),
-//            t("Fring", "NNP", "fring"),
-//            t("in", "IN", "in"),
-//            t("Breaking", "VBG", "break"),
-//            t("Bad", "JJ", "bad"),
-//            t("?", ".", "?")
-//        )
+        // Who played Gus Fring in Breaking Bad?
+
+        expectQuestionSuccess(
+            .person(
+                .and([
+                    .withFilter(
+                        name: [t("played", "VBD", "play")],
+                        filter: .plain(.named([
+                            t("Gus", "NNP", "gus"),
+                            t("Fring", "NNP", "fring")
+                        ]))
+                    ),
+                    .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("in", "IN", "in")],
+                            value: .named([
+                                t("Breaking", "NNP", "break"),
+                                t("Bad", "NNP", "bad")
+                            ])
+                        )
+                    )
+                ])
+            ),
+            t("Who", "WP", "who"),
+            t("played", "VBD", "play"),
+            t("Gus", "NNP", "gus"),
+            t("Fring", "NNP", "fring"),
+            t("in", "IN", "in"),
+            t("Breaking", "NNP", "break"),
+            t("Bad", "NNP", "bad"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ12() {
@@ -422,7 +430,9 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                     .named([t("states", "N", "state")]),
                     property: .withFilter(
                         name: [t("border", "V", "border")],
-                        filter: .plain(.named([t("Illinois", "NNP", "illinois")]))
+                        filter: .plain(.named([
+                            t("Illinois", "NNP", "illinois")
+                        ]))
                     )
                 )
             ),
@@ -513,42 +523,75 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ19() {
 
-        // TODO:
-//        // To which party does the mayor of Paris belong?
-//
-//        expectQuestionSuccess(
-//            .other(
-//                //
-//            ),
-//            t("To", "TO", "to"),
-//            t("which", "WDT", "which"),
-//            t("party", "NN", "party"),
-//            t("does", "VBZ", "do"),
-//            t("the", "DT", "the"),
-//            t("mayor", "NN", "mayor"),
-//            t("of", "IN", "of"),
-//            t("Paris", "NNP", "paris"),
-//            t("belong", "VBP", "belong"),
-//            t("?", ".", "?")
-//        )
+        // To which party does the mayor of Paris belong?
+
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([t("party", "NN", "party")]),
+                    property: .inverseWithFilter(
+                        name: [
+                            t("does", "VBZ", "do"),
+                            t("belong", "VBP", "belong")
+                        ],
+                        filter: .plain(
+                            .relationship(
+                                .named([
+                                    t("the", "DT", "the"),
+                                    t("mayor", "NN", "mayor")
+                                ]),
+                                .named([t("Paris", "NNP", "paris")]),
+                                token: t("of", "IN", "of")
+                            )
+                        )
+                    )
+                )
+            ),
+            t("To", "TO", "to"),
+            t("which", "WDT", "which"),
+            t("party", "NN", "party"),
+            t("does", "VBZ", "do"),
+            t("the", "DT", "the"),
+            t("mayor", "NN", "mayor"),
+            t("of", "IN", "of"),
+            t("Paris", "NNP", "paris"),
+            t("belong", "VBP", "belong"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ20() {
 
-        // TODO:
-//        // Who does the voice of Bart Simpson?
-//
-//        expectQuestionSuccess(
-//            .other(.named([])),
-//            t("Who", "WP", "who"),
-//            t("does", "VBZ", "do"),
-//            t("the", "DT", "the"),
-//            t("voice", "NN", "voice"),
-//            t("of", "IN", "of"),
-//            t("Bart", "NNP", "bart"),
-//            t("Simpson", "NNP", "simpson"),
-//            t("?", ".", "?")
-//        )
+        // Who does the voice of Bart Simpson?
+
+        expectQuestionSuccess(
+            .person(
+                .withFilter(
+                    name: [t("does", "VBZ", "do")],
+                    filter: .plain(
+                        .relationship(
+                            .named(
+                                [t("the", "DT", "the"),
+                                 t("voice", "NN", "voice")
+                            ]),
+                            .named([
+                                t("Bart", "NNP", "bart"),
+                                t("Simpson", "NNP", "simpson")
+                            ]),
+                            token: t("of", "IN", "of")
+                        )
+                    )
+                )
+            ),
+            t("Who", "WP", "who"),
+            t("does", "VBZ", "do"),
+            t("the", "DT", "the"),
+            t("voice", "NN", "voice"),
+            t("of", "IN", "of"),
+            t("Bart", "NNP", "bart"),
+            t("Simpson", "NNP", "simpson"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ21() {
