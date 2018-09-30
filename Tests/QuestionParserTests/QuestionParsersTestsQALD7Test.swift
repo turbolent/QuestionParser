@@ -78,8 +78,6 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
 
     func testQ4() {
 
-        // TODO: include initial "in"
-
         // In which city did John F. Kennedy die?
 
         expectQuestionSuccess(
@@ -89,7 +87,8 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
                     property: .inverseWithFilter(
                         name: [
                             t("did", "VBD", "do"),
-                            t("die", "VB", "die")
+                            t("die", "VB", "die"),
+                            t("in", "IN", "in")
                         ],
                         filter: .plain(.named([
                             t("John", "NNP", "john"),
@@ -295,33 +294,34 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
 
     func testQ10() {
 
-        // TODO: inverse, include initial "in"
+        // In which country is the Limerick Lake?
 
-//        // In which country is the Limerick Lake?
-//
-//        expectQuestionSuccess(
-//            .other(
-//                .withProperty(
-//                    .named([t("country", "NN", "country")]),
-//                    property: .withFilter(
-//                        name: [t("is", "VBZ", "be")],
-//                        filter: .plain(.named([
-//                            t("the", "DT", "the"),
-//                            t("Limerick", "NNP", "limerick"),
-//                            t("Lake", "NNP", "lake")
-//                        ]))
-//                    )
-//                )
-//            ),
-//            t("In", "IN", "in"),
-//            t("which", "WDT", "which"),
-//            t("country", "NN", "country"),
-//            t("is", "VBZ", "be"),
-//            t("the", "DT", "the"),
-//            t("Limerick", "NNP", "limerick"),
-//            t("Lake", "NNP", "lake"),
-//            t("?", ".", "?")
-//        )
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([t("country", "NN", "country")]),
+                    property: .inverseWithFilter(
+                        name: [
+                            t("is", "VBZ", "be"),
+                            t("in", "IN", "in")
+                        ],
+                        filter: .plain(.named([
+                            t("the", "DT", "the"),
+                            t("Limerick", "NNP", "limerick"),
+                            t("Lake", "NNP", "lake")
+                        ]))
+                    )
+                )
+            ),
+            t("In", "IN", "in"),
+            t("which", "WDT", "which"),
+            t("country", "NN", "country"),
+            t("is", "VBZ", "be"),
+            t("the", "DT", "the"),
+            t("Limerick", "NNP", "limerick"),
+            t("Lake", "NNP", "lake"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ11() {
@@ -409,7 +409,8 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
                         .inverseWithFilter(
                             name: [
                                 t("was", "VBD", "be"),
-                                t("starring", "VBG", "star")
+                                t("starring", "VBG", "star"),
+                                t("in", "IN", "in")
                             ],
                             filter: .plain(.named([
                                 t("Julia", "NNP", "julia"),
@@ -609,8 +610,6 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
 
     func testQ20() {
 
-        // TODO: include initial "through"
-
         // Through which countries does the Yenisei river flow?
 
         expectQuestionSuccess(
@@ -620,7 +619,8 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
                     property: .inverseWithFilter(
                         name: [
                             t("does", "VBZ", "do"),
-                            t("flow", "V", "flow")
+                            t("flow", "V", "flow"),
+                            t("through", "IN", "through")
                         ],
                         filter: .plain(.named([
                             t("the", "DT", "the"),

@@ -287,7 +287,8 @@ final class QuestionParsersTestsFull: XCTestCase {
                     property: .inverseWithFilter(
                         name: [
                             t("did", "VBD", "do"),
-                            t("appear", "VB", "appear")
+                            t("appear", "VB", "appear"),
+                            t("in", "IN", "in")
                         ],
                         filter: .plain(.named([
                             t("Jennifer", "NNP", "jennifer"),
@@ -1232,8 +1233,11 @@ final class QuestionParsersTestsFull: XCTestCase {
                         t("californian", "JJS", "californian"),
                         t("cities", "NNS", "city")
                     ]),
-                    property: .withFilter(
-                        name: [t("live", "VBP", "live")],
+                    property: .inverseWithFilter(
+                        name: [
+                            t("live", "VBP", "live"),
+                            t("in", "IN", "in")
+                        ],
                         filter: .withComparativeModifier(
                             modifier: [
                                 t("more", "JJR", "more"),

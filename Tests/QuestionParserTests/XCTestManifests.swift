@@ -115,7 +115,7 @@ extension QuestionParsersTestsPartial {
         ("testProperties", testProperties),
         ("testProperty", testProperty),
         ("testQueries", testQueries),
-        ("testQueryRelationships", testQueryRelationships),
+        ("testQueryPossessiveRelationships", testQueryPossessiveRelationships),
         ("testSomeAllAny", testSomeAllAny),
         ("testThingQuestion", testThingQuestion),
         ("testWhichWhat", testWhichWhat),

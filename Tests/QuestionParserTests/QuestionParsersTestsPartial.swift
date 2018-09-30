@@ -333,6 +333,22 @@ final class QuestionParsersTestsPartial: XCTestCase {
                       t("Obama", "NNP", "obama"),
                       t("star", "VB", "star"),
                       t("in", "IN", "in"))
+
+        expectSuccess(p,
+                      .inverseWithFilter(
+                          name: [
+                              t("died", "VBD", "die"),
+                              t("in", "IN", "in")
+                          ],
+                          filter: .plain(
+                            .named([
+                                t("Orwell", "NNP", "Orwell")
+                            ])
+                          )
+                      ),
+                      t("died", "VBD", "die"),
+                      t("Orwell", "NNP", "Orwell"),
+                      t("in", "IN", "in"))
     }
 
     func testProperties() {
@@ -470,8 +486,8 @@ final class QuestionParsersTestsPartial: XCTestCase {
                       t("Japan", "NNP", "japan"))
     }
 
-    func testQueryRelationships() {
-        let p = QuestionParsers.queryRelationships
+    func testQueryPossessiveRelationships() {
+        let p = QuestionParsers.queryPossessiveRelationships
 
         expectSuccess(p,
                       .named([t("Clinton", "NNP", "clinton")]),

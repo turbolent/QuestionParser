@@ -163,7 +163,8 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                     property: .inverseWithFilter(
                         name: [
                             t("is", "VBZ", "be"),
-                            t("located", "VBN", "locate")
+                            t("located", "VBN", "locate"),
+                            t("in", "IN", "in")
                         ],
                         filter: .plain(.named([
                             t("Mount", "NNP", "mount"),
@@ -225,7 +226,11 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                 .withProperty(
                     .named([t("school", "NN", "school")]),
                     property: .inverseWithFilter(
-                        name: [t("did", "VBD", "do"), t("study", "VB", "study")],
+                        name: [
+                            t("did", "VBD", "do"),
+                            t("study", "VB", "study"),
+                            t("in", "IN", "in")
+                        ],
                         filter: .plain(.relationship(
                             .named([t("wife", "NN", "wife")]),
                             .named([t("Obama", "NNP", "obama")]),
@@ -711,7 +716,8 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                     property: .inverseWithFilter(
                         name: [
                             t("did", "VBD", "do"),
-                            t("die", "VB", "die")
+                            t("die", "VB", "die"),
+                            t("in", "IN", "in")
                         ],
                         filter: .plain(.named([
                             t("Nikos", "NNP", "nikos"),
@@ -1255,8 +1261,6 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ47() {
 
-        // TODO: initial "in" should be part of inverse property ("be in")
-
         // In which time zone is Rome?
 
         expectQuestionSuccess(
@@ -1266,8 +1270,11 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                         t("time", "NN", "time"),
                         t("zone", "NN", "zone")
                     ]),
-                    property: .withFilter(
-                        name: [t("is", "VBZ", "be")],
+                    property: .inverseWithFilter(
+                        name: [
+                            t("is", "VBZ", "be"),
+                            t("in", "IN", "in")
+                        ],
                         filter: .plain(.named([t("Rome", "NNP", "rome")]))
                     )
                 )
@@ -1669,8 +1676,11 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
             .other(
                 .withProperty(
                     .named([t("day", "NN", "day")]),
-                    property: .withFilter(
-                        name: [t("is", "VBZ", "be")],
+                    property: .inverseWithFilter(
+                        name: [
+                            t("is", "VBZ", "be"),
+                            t("on", "IN", "on")
+                        ],
                         filter: .plain(.named([
                             t("Columbus", "NNP", "columbus"),
                             t("Day", "NNP", "day")
@@ -2010,32 +2020,34 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ74() {
 
-        // TODO: inverse filter, "live in"
-//
-//        // In which city does Sylvester Stallone live?
-//
-//        expectQuestionSuccess(
-//            .other(
-//                .withProperty(
-//                    .named([t("city", "NN", "city")]),
-//                    property: .withFilter(
-//                        name: [t("does", "VBZ", "do")],
-//                        filter: .plain(.named([
-//                            t("Sylvester", "NNP", "sylvester"),
-//                            t("Stallone", "NNP", "stallone")
-//                        ]))
-//                    )
-//                )
-//            ),
-//            t("In", "IN", "in"),
-//            t("which", "WDT", "which"),
-//            t("city", "NN", "city"),
-//            t("does", "VBZ", "do"),
-//            t("Sylvester", "NNP", "sylvester"),
-//            t("Stallone", "NNP", "stallone"),
-//            t("live", "RB", "live"),
-//            t("?", ".", "?")
-//        )
+        // In which city does Sylvester Stallone live?
+
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([t("city", "NN", "city")]),
+                    property: .inverseWithFilter(
+                        name: [
+                            t("does", "VBZ", "do"),
+                            t("live", "VB", "live"),
+                            t("in", "IN", "in")
+                        ],
+                        filter: .plain(.named([
+                            t("Sylvester", "NNP", "sylvester"),
+                            t("Stallone", "NNP", "stallone")
+                        ]))
+                    )
+                )
+            ),
+            t("In", "IN", "in"),
+            t("which", "WDT", "which"),
+            t("city", "NN", "city"),
+            t("does", "VBZ", "do"),
+            t("Sylvester", "NNP", "sylvester"),
+            t("Stallone", "NNP", "stallone"),
+            t("live", "VB", "live"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ75() {
@@ -2136,19 +2148,30 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ80() {
 
-        // TODO:
-//        // What is Elon Musk famous for?
-//
-//        expectQuestionSuccess(
-//            .other(.named([])),
-//            t("What", "WP", "what"),
-//            t("is", "VBZ", "be"),
-//            t("Elon", "NNP", "elon"),
-//            t("Musk", "NNP", "musk"),
-//            t("famous", "JJ", "famous"),
-//            t("for", "IN", "for"),
-//            t("?", ".", "?")
-//        )
+        // What is Elon Musk famous for?
+
+        expectQuestionSuccess(
+            .thing(
+                .inverseWithFilter(
+                    name: [
+                        t("is", "VBZ", "be"),
+                        t("famous", "JJ", "famous"),
+                        t("for", "IN", "for")
+                    ],
+                    filter: .plain(.named([
+                        t("Elon", "NNP", "elon"),
+                        t("Musk", "NNP", "musk")
+                    ]))
+                )
+            ),
+            t("What", "WP", "what"),
+            t("is", "VBZ", "be"),
+            t("Elon", "NNP", "elon"),
+            t("Musk", "NNP", "musk"),
+            t("famous", "JJ", "famous"),
+            t("for", "IN", "for"),
+            t("?", ".", "?")
+        )
     }
 }
 

@@ -182,5 +182,9 @@ func expectSuccess<T: Equatable>(
 }
 
 func expectQuestionSuccess(_ expectedQuestion: ListQuestion, _ tokens: Token...) {
-    expectSuccess(QuestionParsers.question, expectedQuestion, tokens)
+    expectSuccess(
+        QuestionParsers.question.whole(),
+        expectedQuestion,
+        QuestionParsers.rewrite(tokens: tokens)
+    )
 }

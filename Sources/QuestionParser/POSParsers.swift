@@ -53,9 +53,6 @@ public struct POSParsers {
     public static let whDeterminer =
         TP.pos("WDT", strict: true)
 
-    public static let sentenceTerminator =
-        TP.pos(".", strict: true)
-
     public static let anyAdverb =
         TP.pos("RB", strict: false)
 }

@@ -113,7 +113,7 @@ public struct QuestionParsers {
     // Examples:
     //   - "\"The Red Victorian\""
 
-    static let quoted: Parser<[Token], Token> = {
+    public static let quoted: Parser<[Token], Token> = {
         let opening = TP.pos("``", strict: true)
         let closing = TP.pos("''", strict: true)
         let anyExceptClosing: Parser<[Token], Token> =
@@ -216,10 +216,21 @@ public struct QuestionParsers {
     //   - "by George Orwell"
     //   - "did George Orwell write"
     //   - "did Obama star in"
+    //   - "died Orwell in"
     // NOTE: first two examples are "direct", second two are "inverse":
     //       "did Orwell write" ~= "were written by" Orwell => "did write Orwell"
 
-    public static let inversePropertySuffix: Parser<([Token], Filter) -> Property, Token> =
+    public static let inversePropertyAdjectiveSuffix: Parser<([Token], Filter) -> Property, Token> =
+        (POS.strictAdjective ~ POS.preposition) ^^ { adjective, preposition in
+            return { verbs, filter in
+                .inverseWithFilter(
+                    name: verbs + [adjective, preposition],
+                    filter: filter
+                )
+            }
+    }
+
+    public static let inversePropertyVerbsSuffix: Parser<([Token], Filter) -> Property, Token> =
         (POS.verbs ~ (POS.particle || (POS.preposition <~ notFollowedBy(namedValue))).opt()) ^^ {
             let (moreVerbs, particle) = $0
             let rest = moreVerbs
@@ -230,7 +241,22 @@ public struct QuestionParsers {
                     filter: filter
                 )
             }
-    }
+        }
+
+    public static let inversePropertyPrepositionSuffix: Parser<([Token], Filter) -> Property, Token> =
+        (POS.preposition <~ notFollowedBy(namedValue)) ^^ { preposition in
+            return { verbs, filter in
+                .inverseWithFilter(
+                    name: verbs + [preposition],
+                    filter: filter
+                )
+            }
+        }
+
+    public static let inversePropertySuffix: Parser<([Token], Filter) -> Property, Token> =
+            inversePropertyPrepositionSuffix
+            || inversePropertyVerbsSuffix
+            || inversePropertyAdjectiveSuffix
 
     public static let propertyAdjectiveSuffix: Parser<([Token], Filter) -> Property, Token> =
         (POS.strictAdjective <~ notFollowedBy(POS.noun)) ^^ { adjective in
@@ -248,8 +274,13 @@ public struct QuestionParsers {
                 // TODO: more after filters only when verb is auxiliary do/does/did
 
                 let moreParser: Parser<(([Token], Filter) -> Property)?, Token> = {
-                    if verbs.count == 1, let verb = verbs.first, verb.isAuxiliaryVerb {
-                        return (inversePropertySuffix || propertyAdjectiveSuffix).opt()
+                    if verbs.count == 1, let verb = verbs.first {
+
+                        if verb.isAuxiliaryVerb {
+                            return (inversePropertySuffix || propertyAdjectiveSuffix).opt()
+                        } else {
+                            return (inversePropertyPrepositionSuffix || propertyAdjectiveSuffix).opt()
+                        }
                     } else {
                         return propertyAdjectiveSuffix.opt()
                     }
@@ -355,7 +386,7 @@ public struct QuestionParsers {
     //   - "California's cities' population sizes"
     //   - "Clinton's children and grandchildren"
 
-    public static let queryRelationships: Parser<Query, Token> = {
+    public static let queryPossessiveRelationships: Parser<Query, Token> = {
         let separator = POS.possessive ^^ { sep in
             { (a: Query, b: Query) in
                 Query.relationship(b, a, token: sep)
@@ -363,13 +394,6 @@ public struct QuestionParsers {
         }
         return queries.chainLeft(separator: separator, min: 1).map { $0! }
     }()
-
-    // Examples:
-    //   - "of the USA"
-    //   - "of China"
-
-    public static let relationship: Parser<(Token, Query), Token> =
-        TP.word("of") ~ fullQuery
 
     // Examples
     //   - "people"
@@ -393,8 +417,8 @@ public struct QuestionParsers {
             }
         }
 
-    public static let queryRelationship: Parser<(Query) -> Query, Token> =
-        relationship ^^ {
+    public static let queryOfRelationship: Parser<(Query) -> Query, Token> =
+        (TP.word("of") ~ fullQuery) ^^ {
             let (sep, nested) = $0
             return { (query: Query) in
                 .relationship(
@@ -406,8 +430,8 @@ public struct QuestionParsers {
         }
 
     public static let fullQuery: Parser<Query, Token> =
-        ((queryRelationships <~ (POS.whDeterminer || TP.word("who")).opt())
-            ~ (queryProperties ||| queryRelationship).opt())
+        ((queryPossessiveRelationships <~ (POS.whDeterminer || TP.word("who")).opt())
+            ~ (queryProperties ||| queryOfRelationship).opt())
         ^^ {
             switch $0 {
             case (let query, nil):
@@ -449,11 +473,31 @@ public struct QuestionParsers {
     //   - "what did George Orwell write"
     //   - "what was authored by George Orwell"
 
-    static let thingQuestion: Parser<ListQuestion, Token> =
+    public static let thingQuestion: Parser<ListQuestion, Token> =
         (TP.word("what") ~> properties)
             ^^ ListQuestion.thing
 
-    static let question: Parser<ListQuestion, Token> =
-        (listQuestion || personQuestion || thingQuestion)
-            <~ POSParsers.sentenceTerminator.opt()
+    public static let question: Parser<ListQuestion, Token> =
+        thingQuestion ||| personQuestion ||| listQuestion
+
+    public static func rewrite(tokens: [Token]) -> [Token] {
+        var tokens = tokens
+
+        // drop sentence terminator
+        if tokens.last?.tag == "." {
+            tokens.removeLast()
+        }
+
+        // move initial preposition to end
+        if tokens.first?.tag == "IN" {
+            let initialPreposition = tokens.removeFirst()
+            tokens.append(Token(
+                word: initialPreposition.word.lowercased(),
+                tag: initialPreposition.tag,
+                lemma: initialPreposition.lemma
+            ))
+        }
+
+        return tokens
+    }
 }
