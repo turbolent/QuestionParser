@@ -221,23 +221,16 @@ public struct QuestionParsers {
 
     public static let inversePropertySuffix: Parser<([Token], Filter) -> Property, Token> =
         (POS.verbs ~ (POS.particle || (POS.preposition <~ notFollowedBy(namedValue))).opt()) ^^ {
-            switch $0 {
-            case let (moreVerbs, particle?):
-                return { verbs, filter in
-                    .inverseWithFilter(
-                        name: verbs + moreVerbs + [particle],
-                        filter: filter
-                    )
-                }
-            case (let moreVerbs, nil):
-                return { verbs, filter in
-                    .inverseWithFilter(
-                        name: verbs + moreVerbs,
-                        filter: filter
-                    )
-                }
+            let (moreVerbs, particle) = $0
+            let rest = moreVerbs
+                + (particle.map { [$0] } ?? [])
+            return { verbs, filter in
+                .inverseWithFilter(
+                    name: verbs + rest,
+                    filter: filter
+                )
             }
-        }
+    }
 
     public static let propertyAdjectiveSuffix: Parser<([Token], Filter) -> Property, Token> =
         POS.strictAdjective ^^ { adjective in
