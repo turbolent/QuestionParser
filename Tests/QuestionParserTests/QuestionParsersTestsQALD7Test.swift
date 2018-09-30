@@ -206,24 +206,53 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
     func testQ8() {
 
         // TODO:
-//        // Give me all cities in New Jersey with more than 100000 inhabitants.
-//
-//        expectQuestionSuccess(
-//            .other(.named([])),
-//            t("Give", "VB", "give"),
-//            t("me", "PRP", "-PRON-"),
-//            t("all", "DT", "all"),
-//            t("cities", "NNS", "city"),
-//            t("in", "IN", "in"),
-//            t("New", "NNP", "new"),
-//            t("Jersey", "NNP", "jersey"),
-//            t("with", "IN", "with"),
-//            t("more", "JJR", "more"),
-//            t("than", "IN", "than"),
-//            t("100000", "CD", "100000"),
-//            t("inhabitants", "NNS", "inhabitant"),
-//            t(".", ".", ".")
-//        )
+        // Give me all cities in New Jersey with more than 100000 inhabitants.
+
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([t("cities", "NNS", "city")]),
+                    property: .and([
+                        .withFilter(
+                            name: [],
+                            filter: .withModifier(
+                                modifier: [t("in", "IN", "in")],
+                                value: .named([
+                                    t("New", "NNP", "new"),
+                                    t("Jersey", "NNP", "jersey")
+                                ])
+                            )
+                        ),
+                        .withFilter(
+                            name: [t("with", "IN", "with")],
+                            filter: .withComparativeModifier(
+                                modifier: [
+                                    t("more", "JJR", "more"),
+                                    t("than", "IN", "than")
+                                ],
+                                value: .number(
+                                    [t("100000", "CD", "100000")],
+                                    unit: [t("inhabitants", "NNS", "inhabitant")]
+                                )
+                            )
+                        )
+                    ])
+                )
+            ),
+            t("Give", "VB", "give"),
+            t("me", "PRP", "-PRON-"),
+            t("all", "DT", "all"),
+            t("cities", "NNS", "city"),
+            t("in", "IN", "in"),
+            t("New", "NNP", "new"),
+            t("Jersey", "NNP", "jersey"),
+            t("with", "IN", "with"),
+            t("more", "JJR", "more"),
+            t("than", "IN", "than"),
+            t("100000", "CD", "100000"),
+            t("inhabitants", "NNS", "inhabitant"),
+            t(".", ".", ".")
+        )
     }
 
     func testQ9() {

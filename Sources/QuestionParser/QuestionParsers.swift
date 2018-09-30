@@ -242,7 +242,7 @@ public struct QuestionParsers {
             }
         }
 
-    public static let property: Parser<Property, Token> =
+    public static let complexProperty: Parser<Property, Token> =
         (POS.whDeterminer.opt() ~> POS.verbs.opt()).flatMap {
             if let verbs = $0 {
                 // TODO: more after filters only when verb is auxiliary do/does/did
@@ -272,6 +272,16 @@ public struct QuestionParsers {
                 }
             }
         }
+
+    public static let withProperty: Parser<Property, Token> =
+        (TP.word("with") ~ filters) ^^ {
+            let (name, filter) = $0
+            return .withFilter(name: [name], filter: filter)
+        }
+
+    public static let property: Parser<Property, Token> =
+        withProperty
+            || complexProperty
 
 
     // Examples:
