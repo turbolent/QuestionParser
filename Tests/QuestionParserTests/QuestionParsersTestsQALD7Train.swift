@@ -2233,10 +2233,26 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
     func testQ78() {
 
         // TODO:
+
 //        // Who became president after JFK died?
 //
 //        expectQuestionSuccess(
-//            .other(.named([])),
+//            .person(
+//                .and([
+//                    .withFilter(
+//                        name: [t("became", "VBD", "become")],
+//                        filter: .plain(.named([t("president", "NN", "president")]))
+//                    ),
+//                    .withFilter(
+//                        name: [],
+//                        filter: .withModifier(
+//                            modifier: [t("after", "IN", "after")],
+//                            value: .named([t("JFK", "NNP", "jfk")])
+//                        )
+//                    ),
+//                    .named([t("died", "VBD", "die")])
+//                ])
+//            ),
 //            t("Who", "WP", "who"),
 //            t("became", "VBD", "become"),
 //            t("president", "NN", "president"),
@@ -2249,21 +2265,34 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ79() {
 
-        // TODO: inverse
+        // In what city is the Heineken brewery?
 
-//        // In what city is the Heineken brewery?
-//
-//        expectQuestionSuccess(
-//            .other(.named([])),
-//            t("In", "IN", "in"),
-//            t("what", "WP", "what"),
-//            t("city", "NN", "city"),
-//            t("is", "VBZ", "be"),
-//            t("the", "DT", "the"),
-//            t("Heineken", "NNP", "heineken"),
-//            t("brewery", "NN", "brewery"),
-//            t("?", ".", "?")
-//        )
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([t("city", "NN", "city")]),
+                    property: .inverseWithFilter(
+                        name: [
+                            t("is", "VBZ", "be"),
+                            t("in", "IN", "in")
+                        ],
+                        filter: .plain(.named([
+                            t("the", "DT", "the"),
+                            t("Heineken", "NNP", "heineken"),
+                            t("brewery", "NN", "brewery")
+                        ]))
+                    )
+                )
+            ),
+            t("In", "IN", "in"),
+            t("what", "WP", "what"),
+            t("city", "NN", "city"),
+            t("is", "VBZ", "be"),
+            t("the", "DT", "the"),
+            t("Heineken", "NNP", "heineken"),
+            t("brewery", "NN", "brewery"),
+            t("?", ".", "?")
+        )
     }
 
     func testQ80() {
