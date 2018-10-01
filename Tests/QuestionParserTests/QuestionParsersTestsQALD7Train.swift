@@ -596,9 +596,9 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ21() {
 
-        // Who composed the soundtrack for Cameron's Titanic?
-
         // TODO: improve
+
+        // Who composed the soundtrack for Cameron's Titanic?
 
         expectQuestionSuccess(
             .person(
@@ -1144,25 +1144,18 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
         expectQuestionSuccess(
             .other(
-                .relationship(
-                    .named([t("a", "DT", "a"), t("list", "NN", "list")]),
-                    .withProperty(
-                        .named([
-                            t("all", "DT", "all"),
-                            t("Canadians", "NNPS", "canadians")
-                        ]),
-                        property: .withFilter(
-                            name: [t("reside", "VBP", "reside")],
-                            filter: .withModifier(
-                                modifier: [t("in", "IN", "in")],
-                                value: .named([
-                                    t("the", "DT", "the"),
-                                    t("U.S.", "NNP", "u.s.")
-                                ])
-                            )
+                .withProperty(
+                    .named([t("Canadians", "NNPS", "canadians")]),
+                    property: .withFilter(
+                        name: [t("reside", "VBP", "reside")],
+                        filter: .withModifier(
+                            modifier: [t("in", "IN", "in")],
+                            value: .named([
+                                t("the", "DT", "the"),
+                                t("U.S.", "NNP", "u.s.")
+                            ])
                         )
-                    ),
-                    token: t("of", "IN", "of")
+                    )
                 )
             ),
             t("Give", "VB", "give"),
@@ -1384,22 +1377,27 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ48() {
 
-        // TODO:
-//        // Give me a list of all critically endangered birds.
-//
-//        expectQuestionSuccess(
-//            .other(.named([])),
-//            t("Give", "VB", "give"),
-//            t("me", "PRP", "-PRON-"),
-//            t("a", "DT", "a"),
-//            t("list", "NN", "list"),
-//            t("of", "IN", "of"),
-//            t("all", "DT", "all"),
-//            t("critically", "RB", "critically"),
-//            t("endangered", "VBN", "endanger"),
-//            t("birds", "NNS", "bird"),
-//            t(".", ".", ".")
-//        )
+        // Give me a list of all critically endangered birds.
+
+        expectQuestionSuccess(
+            .other(
+                .named([
+                    t("critically", "RB", "critically"),
+                    t("endangered", "JJ", "endanger"),
+                    t("birds", "NNS", "bird")
+                ])
+            ),
+            t("Give", "VB", "give"),
+            t("me", "PRP", "-PRON-"),
+            t("a", "DT", "a"),
+            t("list", "NN", "list"),
+            t("of", "IN", "of"),
+            t("all", "DT", "all"),
+            t("critically", "RB", "critically"),
+            t("endangered", "JJ", "endanger"),
+            t("birds", "NNS", "bird"),
+            t(".", ".", ".")
+        )
     }
 
     func testQ49() {
@@ -1670,8 +1668,6 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
     }
 
     func testQ58() {
-
-        // TODO:
 
         // Which space probes were sent into orbit around the sun?
 

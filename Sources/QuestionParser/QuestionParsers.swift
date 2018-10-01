@@ -27,6 +27,7 @@ public struct QuestionParsers {
     //   - "find"
     //   - "list"
     //   - "show me"
+    //   - "give me"
 
     public static let findListGiveShow: Parser<Unit, Token> =
         TP.someWord("find", "list", "give", "show").ignored()
@@ -37,15 +38,20 @@ public struct QuestionParsers {
     //   - "some of"
     //   - "a couple"
 
-    public static let someAllAny: Parser<Unit, Token> = {
-        let someAllAny =
-            TP.someWord("some", "all", "any", "only", "many", "both").ignored()
-        let aFewCouple =
-            TP.word("a").ignored()
-                ~ TP.someWord("few", "couple", "number", "lot").ignored()
-        return (someAllAny || aFewCouple)
-            ~ TP.word("of").opt().ignored()
-    }()
+    public static let someAllAny: Parser<Unit, Token> =
+        TP.someWord("some", "all", "any", "only", "many", "both").ignored()
+
+    public static let aFewCouple: Parser<Unit, Token> =
+        TP.word("a").ignored()
+            ~ TP.someWord("few", "couple", "number", "lot").ignored()
+
+    public static let aListOf: Parser<Unit, Token> =
+        TP.words("a", "list", "of").ignored()
+            ~ someAllAny.opt().ignored()
+
+    public static let count: Parser<Unit, Token> =
+        ((someAllAny || aFewCouple) ~ TP.word("of").opt().ignored())
+            || aListOf
 
     // Examples:
     //   - "Europe"
@@ -477,7 +483,7 @@ public struct QuestionParsers {
     // NOTE: ||| to match as much as possible
 
     public static let listQuestionStart: Parser<Unit, Token> =
-        (whichWhat ||| ((whoWhatBe ||| findListGiveShow) ~ someAllAny.opt())).opt().ignored()
+        (whichWhat ||| ((whoWhatBe ||| findListGiveShow) ~ count.opt())).opt().ignored()
 
     // Examples:
     //   - "which presidents were born before 1900"

@@ -48,8 +48,8 @@ final class QuestionParsersTestsPartial: XCTestCase {
                       t("me", "PRP", ""))
     }
 
-    func testSomeAllAny() {
-        let p = QuestionParsers.someAllAny
+    func testCount() {
+        let p = QuestionParsers.count
 
         expectSuccess(p, Unit.empty,
                       t("all", "DT", "all"))
