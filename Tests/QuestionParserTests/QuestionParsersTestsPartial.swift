@@ -129,7 +129,7 @@ final class QuestionParsersTestsPartial: XCTestCase {
                       t("million", "CD", "million"))
 
         expectSuccess(p,
-                      .number(
+                      .numberWithUnit(
                           [
                               t("42", "CD", "42")
                           ],
@@ -140,7 +140,7 @@ final class QuestionParsersTestsPartial: XCTestCase {
                       t("meters", "NNS", "meter"))
 
         expectSuccess(p,
-                      .number(
+                      .numberWithUnit(
                           [
                             t("2", "CD", "2"),
                             t("million", "CD", "million")
@@ -408,7 +408,7 @@ final class QuestionParsersTestsPartial: XCTestCase {
                                       t("longer", "JJR", "long"),
                                       t("than", "IN", "than")
                                   ],
-                                  value: .number(
+                                  value: .numberWithUnit(
                                       [t("200", "CD", "200")],
                                       unit: [t("pages", "NNS", "page")]
                                   )

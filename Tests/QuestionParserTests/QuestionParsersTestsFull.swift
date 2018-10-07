@@ -681,7 +681,7 @@ final class QuestionParsersTestsFull: XCTestCase {
                                 t("more", "JJR", "more"),
                                 t("than", "IN", "than")
                             ],
-                            value: .number(
+                            value: .numberWithUnit(
                                 [
                                     t("two", "CD", "two"),
                                     t("million", "CD", "million")
@@ -1243,7 +1243,7 @@ final class QuestionParsersTestsFull: XCTestCase {
                                 t("more", "JJR", "more"),
                                 t("than", "IN", "than")
                             ],
-                            value: .number(
+                            value: .numberWithUnit(
                                 [
                                     t("2", "CD", "2"),
                                     t("million", "CD", "million")
@@ -2410,7 +2410,7 @@ final class QuestionParsersTestsFull: XCTestCase {
                             t("are", "VBP", "be"),
                             t("high", "JJ", "high")
                         ],
-                        filter: .plain(.number(
+                        filter: .plain(.numberWithUnit(
                             [t("1000", "CD", "1000")],
                             unit: [t("meters", "NNS", "meter")])
                         )
@@ -2441,7 +2441,7 @@ final class QuestionParsersTestsFull: XCTestCase {
                                 t("more", "JJR", "more"),
                                 t("than", "IN", "than")
                             ],
-                            value: .number(
+                            value: .numberWithUnit(
                                 [t("1000", "CD", "1000")],
                                 unit: [t("meters", "NNS", "meter")]
                             )

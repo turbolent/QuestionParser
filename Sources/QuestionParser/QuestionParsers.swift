@@ -124,7 +124,7 @@ public struct QuestionParsers {
         (POS.numbers ~ named.opt()) ^^ {
             (numbers, optUnit) in
             return optUnit
-                .map { .number(numbers, unit: $0) }
+                .map { .numberWithUnit(numbers, unit: $0) }
                 ?? .number(numbers)
         }
 

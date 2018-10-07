@@ -653,7 +653,7 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                                 t("higher", "JJR", "high"),
                                 t("than", "IN", "than")
                             ],
-                            value: .number(
+                            value: .numberWithUnit(
                                 [t("2", "CD", "2")],
                                 unit: [t("meters", "NNS", "meter")]
                             )
@@ -1452,7 +1452,7 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                                 t("more", "JJR", "more"),
                                 t("than", "IN", "than")
                             ],
-                            value: .number(
+                            value: .numberWithUnit(
                                 [t("ten", "CD", "ten")],
                                 unit: [t("volcanoes", "NNS", "volcano")]
                             )

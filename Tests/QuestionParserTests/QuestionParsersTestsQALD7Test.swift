@@ -144,7 +144,7 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
                                 t("more", "JJR", "more"),
                                 t("than", "IN", "than")
                             ],
-                            value: .number(
+                            value: .numberWithUnit(
                                 [t("ten", "CD", "ten")],
                                 unit: [t("caves", "NNS", "cave")]
                             )
@@ -247,7 +247,7 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
                                     t("more", "JJR", "more"),
                                     t("than", "IN", "than")
                                 ],
-                                value: .number(
+                                value: .numberWithUnit(
                                     [t("100000", "CD", "100000")],
                                     unit: [t("inhabitants", "NNS", "inhabitant")]
                                 )
@@ -593,7 +593,7 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
                                 t("more", "JJR", "more"),
                                 t("than", "IN", "than")
                             ],
-                            value: .number(
+                            value: .numberWithUnit(
                                 [t("two", "CD", "two")],
                                 unit: [
                                     t("official", "JJ", "official"),
