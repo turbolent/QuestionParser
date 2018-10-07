@@ -101,6 +101,7 @@ extension QuestionParsersTestsFull {
 
 extension QuestionParsersTestsPartial {
     static let __allTests = [
+        ("testCount", testCount),
         ("testFilter", testFilter),
         ("testFilters", testFilters),
         ("testFindListGiveShow", testFindListGiveShow),
@@ -116,7 +117,6 @@ extension QuestionParsersTestsPartial {
         ("testProperty", testProperty),
         ("testQueries", testQueries),
         ("testQueryPossessiveRelationships", testQueryPossessiveRelationships),
-        ("testCount", testCount),
         ("testThingQuestion", testThingQuestion),
         ("testWhichWhat", testWhichWhat),
         ("testWhoWhatBe", testWhoWhatBe),

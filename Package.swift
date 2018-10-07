@@ -10,12 +10,12 @@ let package = Package(
             targets: ["QuestionParser"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/turbolent/SwiftParserCombinators.git", .branch("master")),
+        .package(url: "https://github.com/turbolent/ParserCombinators.git", .exact("0.1.0")),
     ],
     targets: [
         .target(
             name: "QuestionParser",
-            dependencies: ["SwiftParserCombinators"]),
+            dependencies: ["ParserCombinators"]),
         .testTarget(
             name: "QuestionParserTests",
             dependencies: ["QuestionParser"]),

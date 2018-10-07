@@ -4,7 +4,7 @@
 // jq '[.questions[]  |  select (.answertype == "resource" ) | .question[] | select(.language == "en") | .string]'
 
 import XCTest
-import SwiftParserCombinators
+import ParserCombinators
 @testable import QuestionParser
 
 final class QuestionParsersTestsQALD7Train: XCTestCase {

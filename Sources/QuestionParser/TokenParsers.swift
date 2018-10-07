@@ -1,5 +1,5 @@
 
-import SwiftParserCombinators
+import ParserCombinators
 
 
 public struct TokenParsers {

@@ -1,5 +1,5 @@
 import XCTest
-import SwiftParserCombinators
+import ParserCombinators
 @testable import QuestionParser
 
 final class TokenParsersTests: XCTestCase {

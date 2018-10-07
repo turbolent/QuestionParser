@@ -1,5 +1,5 @@
 
-import SwiftParserCombinators
+import ParserCombinators
 
 public extension Parser {
     func ignored() -> Parser<Unit, Element> {

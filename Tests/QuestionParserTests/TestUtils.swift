@@ -1,6 +1,6 @@
 
 import XCTest
-import SwiftParserCombinators
+import ParserCombinators
 @testable import QuestionParser
 
 func t(_ word: String, _ tag: String, _ lemma: String) -> Token {
