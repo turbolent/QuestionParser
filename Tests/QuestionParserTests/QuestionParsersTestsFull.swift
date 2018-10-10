@@ -2733,4 +2733,31 @@ final class QuestionParsersTestsFull: XCTestCase {
             t("Stanford", "NNP", "stanford")
         )
     }
+
+    func testQ95() {
+        expectQuestionSuccess(
+            .person(
+                .withFilter(
+                    name: [t("went", "VBD", "go")],
+                    filter: .or([
+                        .withModifier(
+                            modifier: [t("to", "TO", "to")],
+                            value: .named([t("Stanford", "NNP", "stanford")])
+                        ),
+                        .withModifier(
+                            modifier: [t("to", "TO", "to")],
+                            value: .named([t("Berkeley", "NNP", "berkeley")])
+                        ),
+                    ])
+                )
+            ),
+            t("Who", "WP", "who"),
+            t("went", "VBD", "go"),
+            t("to", "TO", "to"),
+            t("Stanford", "NNP", "stanford"),
+            t("or", "CC", "or"),
+            t("to", "TO", "to"),
+            t("Berkeley", "NNP", "berkeley")
+        )
+    }
 }
