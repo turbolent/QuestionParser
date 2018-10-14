@@ -607,7 +607,10 @@ final class QuestionParsersTestsFull: XCTestCase {
         expectQuestionSuccess(
             .other(
                 .relationship(
-                    .named([t("the", "DT", "the"), t("cast", "NN", "cast")]),
+                    .named([
+                        t("the", "DT", "the"),
+                        t("cast", "NN", "cast")
+                    ]),
                     .named([t("Friends", "NNS", "friend")]),
                     token: t("of", "IN", "of")
                 )

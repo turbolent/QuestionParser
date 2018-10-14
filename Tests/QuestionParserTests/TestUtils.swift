@@ -1,6 +1,7 @@
 
 import XCTest
 import ParserCombinators
+import DiffedAssertEqual
 @testable import QuestionParser
 
 func t(_ word: String, _ tag: String, _ lemma: String) -> Token {
@@ -26,7 +27,9 @@ func expectSuccess<T>(
     parser: Parser<T, Token>,
     input: [Token],
     expected: T,
-    usePackratReader: Bool = false
+    usePackratReader: Bool = false,
+    file: StaticString = #file,
+    line: UInt = #line
 )
     where T: Equatable
 {
@@ -37,16 +40,27 @@ func expectSuccess<T>(
     )
     switch result {
     case .success(let value, _):
-        XCTAssertEqual(value, expected)
+        diffedAssertEqual(
+            value,
+            expected,
+            file: file,
+            line: line
+        )
     case .failure, .error:
-        XCTFail(String(describing: result))
+        XCTFail(
+            String(describing: result),
+            file: file,
+            line: line
+        )
     }
 }
 
 func expectSuccess<T>(
     parser: Parser<T, Token>,
     input: [Token],
-    usePackratReader: Bool = false
+    usePackratReader: Bool = false,
+    file: StaticString = #file,
+    line: UInt = #line
 )
     where T: Equatable
 {
@@ -59,7 +73,11 @@ func expectSuccess<T>(
     case .success:
         break
     case .failure, .error:
-        XCTFail(String(describing: result))
+        XCTFail(
+            String(describing: result),
+            file: file,
+            line: line
+        )
     }
 }
 
@@ -67,7 +85,9 @@ func expectSuccess<T>(
     parser: Parser<T?, Token>,
     input: [Token],
     expected: T?,
-    usePackratReader: Bool = false
+    usePackratReader: Bool = false,
+    file: StaticString = #file,
+    line: UInt = #line
 )
     where T: Equatable
 {
@@ -78,9 +98,18 @@ func expectSuccess<T>(
     )
     switch result {
     case .success(let value, _):
-        XCTAssertEqual(value, expected)
+        diffedAssertEqual(
+            value,
+            expected,
+            file: file,
+            line: line
+        )
     case .failure, .error:
-        XCTFail(String(describing: result))
+        XCTFail(
+            String(describing: result),
+            file: file,
+            line: line
+        )
     }
 }
 
@@ -88,7 +117,9 @@ func expectSuccess<T>(
     parser: Parser<[T], Token>,
     input: [Token],
     expected: [T],
-    usePackratReader: Bool = false
+    usePackratReader: Bool = false,
+    file: StaticString = #file,
+    line: UInt = #line
 )
     where T: Equatable
 {
@@ -99,9 +130,18 @@ func expectSuccess<T>(
     )
     switch result {
     case .success(let value, _):
-        XCTAssertEqual(value, expected)
+        diffedAssertEqual(
+            value,
+            expected,
+            file: file,
+            line: line
+        )
     case .failure, .error:
-        XCTFail(String(describing: result))
+        XCTFail(
+            String(describing: result),
+            file: file,
+            line: line
+        )
     }
 }
 
@@ -109,7 +149,9 @@ func expectFailure<T>(
     parser: Parser<T, Token>,
     input: [Token],
     message: String? = nil,
-    usePackratReader: Bool = false
+    usePackratReader: Bool = false,
+    file: StaticString = #file,
+    line: UInt = #line
 ) {
     let result = parse(
         parser: parser,
@@ -118,13 +160,27 @@ func expectFailure<T>(
     )
     switch result {
     case .success:
-        XCTFail("\(result) is successful")
+        XCTFail(
+            "\(result) is successful",
+            file: file,
+            line: line
+        )
     case .failure(let actualMessage, _):
         if let message = message {
-            XCTAssertEqual(actualMessage, message, "Failure, but wrong message")
+            diffedAssertEqual(
+                actualMessage,
+                message,
+                "Failure, but wrong message",
+                file: file,
+                line: line
+            )
         }
     case .error:
-        XCTFail("\(result) is error")
+        XCTFail(
+            "\(result) is error",
+            file: file,
+            line: line
+        )
     }
 }
 
@@ -132,7 +188,9 @@ func expectError<T>(
     parser: Parser<T, Token>,
     input: [Token],
     message: String? = nil,
-    usePackratReader: Bool = false
+    usePackratReader: Bool = false,
+    file: StaticString = #file,
+    line: UInt = #line
 ) {
     let result = parse(
         parser: parser,
@@ -141,12 +199,26 @@ func expectError<T>(
     )
     switch result {
     case .success:
-        XCTFail("\(result) is successful")
+        XCTFail(
+            "\(result) is successful",
+            file: file,
+            line: line
+        )
     case .failure:
-        XCTFail("\(result) is failure")
+        XCTFail(
+            "\(result) is failure",
+            file: file,
+            line: line
+        )
     case .error(let actualMessage, _):
         if let message = message {
-            XCTAssertEqual(actualMessage, message, "Error, but wrong message")
+            diffedAssertEqual(
+                actualMessage,
+                message,
+                "Error, but wrong message",
+                file: file,
+                line: line
+            )
         }
     }
 }
@@ -160,31 +232,46 @@ extension Parser where T == [Character] {
 func expectSuccess<T: Equatable>(
     _ parser: Parser<T, Token>,
     _ expected: T,
-    _ tokens: Token...
+    _ tokens: Token...,
+    file: StaticString = #file,
+    line: UInt = #line
 ) {
     QuestionParserTests.expectSuccess(
         parser,
         expected,
-        tokens
+        tokens,
+        file: file,
+        line: line
     )
 }
 
 func expectSuccess<T: Equatable>(
     _ parser: Parser<T, Token>,
     _ expected: T,
-    _ tokens: [Token]
+    _ tokens: [Token],
+    file: StaticString = #file,
+    line: UInt = #line
 ) {
     QuestionParserTests.expectSuccess(
         parser: parser,
         input: tokens,
-        expected: expected
+        expected: expected,
+        file: file,
+        line: line
     )
 }
 
-func expectQuestionSuccess(_ expectedQuestion: ListQuestion, _ tokens: Token...) {
+func expectQuestionSuccess(
+    _ expectedQuestion: ListQuestion,
+    _ tokens: Token...,
+    file: StaticString = #file,
+    line: UInt = #line
+) {
     expectSuccess(
         QuestionParsers.question <~ endOfInput(),
         expectedQuestion,
-        QuestionParsers.rewrite(tokens: tokens)
+        QuestionParsers.rewrite(tokens: tokens),
+        file: file,
+        line: line
     )
 }
