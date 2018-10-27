@@ -1,5 +1,6 @@
 
-public struct Token: Hashable {
+public struct Token: Hashable, Encodable {
+
     public let word: String
     public let tag: String
     public let lemma: String
