@@ -1,5 +1,11 @@
 import XCTest
 
+extension EncodingTests {
+    static let __allTests = [
+        ("testQ1", testQ1),
+    ]
+}
+
 extension QuestionParsersTestsFull {
     static let __allTests = [
         ("testQ1", testQ1),
@@ -253,14 +259,22 @@ extension TokenParsersTests {
     ]
 }
 
+extension TokenTests {
+    static let __allTests = [
+        ("testEncoding", testEncoding),
+    ]
+}
+
 #if !os(macOS)
 public func __allTests() -> [XCTestCaseEntry] {
     return [
+        testCase(EncodingTests.__allTests),
         testCase(QuestionParsersTestsFull.__allTests),
         testCase(QuestionParsersTestsPartial.__allTests),
         testCase(QuestionParsersTestsQALD7Test.__allTests),
         testCase(QuestionParsersTestsQALD7Train.__allTests),
         testCase(TokenParsersTests.__allTests),
+        testCase(TokenTests.__allTests),
     ]
 }
 #endif

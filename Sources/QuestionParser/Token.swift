@@ -1,5 +1,5 @@
 
-public struct Token: Hashable, Encodable {
+public struct Token: Hashable {
 
     public let word: String
     public let tag: String
@@ -16,5 +16,23 @@ public struct Token: Hashable, Encodable {
 
     public var isAuxiliaryVerb: Bool {
         return Token.auxiliaryVerbLemmas.contains(lemma)
+    }
+}
+
+extension Token: Encodable {
+
+    private enum CodingKeys: CodingKey {
+        case type
+        case word
+        case tag
+        case lemma
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode("token", forKey: .type)
+        try container.encode(word, forKey: .word)
+        try container.encode(tag, forKey: .tag)
+        try container.encode(lemma, forKey: .lemma)
     }
 }

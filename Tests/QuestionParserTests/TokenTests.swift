@@ -15,7 +15,7 @@ class TokenTests: XCTestCase {
 
         diffedAssertEqual(
             string,
-            "[{\"tag\":\"VBD\",\"word\":\"was\",\"lemma\":\"be\"}]"
+            "[{\"word\":\"was\",\"lemma\":\"be\",\"type\":\"token\",\"tag\":\"VBD\"}]"
         )
     }
 }
