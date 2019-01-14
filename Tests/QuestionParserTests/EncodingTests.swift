@@ -35,113 +35,117 @@ class EncodingTests: XCTestCase {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
 
-        diffedAssertEqual(
-            String(data: try encoder.encode(query), encoding: .utf8),
-            """
-            {
-              "type" : "list-question",
-              "subtype" : "other",
-              "query" : {
-                "query" : {
-                  "type" : "query",
-                  "subtype" : "named",
-                  "tokens" : [
-                    {
-                      "word" : "books",
-                      "lemma" : "book",
-                      "type" : "token",
-                      "tag" : "NN"
-                    }
-                  ]
-                },
-                "property" : {
-                  "type" : "property",
-                  "subtype" : "and",
-                  "properties" : [
-                    {
-                      "filter" : {
-                        "type" : "filter",
-                        "subtype" : "plain",
-                        "value" : {
-                          "type" : "value",
-                          "subtype" : "named",
-                          "tokens" : [
-                            {
-                              "word" : "Orwell",
-                              "lemma" : "orwell",
-                              "type" : "token",
-                              "tag" : "NNP"
-                            }
-                          ]
-                        }
-                      },
-                      "type" : "property",
-                      "subtype" : "inverse-with-filter",
-                      "name" : [
+        if #available(OSX 10.13, *) {
+            diffJSON(
+                """
+                {
+                  "type" : "list-question",
+                  "subtype" : "other",
+                  "query" : {
+                    "query" : {
+                      "type" : "query",
+                      "subtype" : "named",
+                      "tokens" : [
                         {
-                          "word" : "did",
-                          "lemma" : "do",
+                          "word" : "books",
+                          "lemma" : "book",
                           "type" : "token",
-                          "tag" : "VBD"
-                        },
-                        {
-                          "word" : "write",
-                          "lemma" : "write",
-                          "type" : "token",
-                          "tag" : "VB"
+                          "tag" : "NN"
                         }
                       ]
                     },
-                    {
-                      "filter" : {
-                        "value" : {
-                          "type" : "value",
-                          "subtype" : "named",
-                          "tokens" : [
+                    "property" : {
+                      "type" : "property",
+                      "subtype" : "and",
+                      "properties" : [
+                        {
+                          "filter" : {
+                            "type" : "filter",
+                            "subtype" : "plain",
+                            "value" : {
+                              "type" : "value",
+                              "subtype" : "named",
+                              "tokens" : [
+                                {
+                                  "word" : "Orwell",
+                                  "lemma" : "orwell",
+                                  "type" : "token",
+                                  "tag" : "NNP"
+                                }
+                              ]
+                            }
+                          },
+                          "type" : "property",
+                          "subtype" : "inverse-with-filter",
+                          "name" : [
                             {
-                              "word" : "the",
-                              "lemma" : "the",
+                              "word" : "did",
+                              "lemma" : "do",
                               "type" : "token",
-                              "tag" : "DT"
+                              "tag" : "VBD"
                             },
                             {
-                              "word" : "world",
-                              "lemma" : "world",
+                              "word" : "write",
+                              "lemma" : "write",
                               "type" : "token",
-                              "tag" : "NN"
-                            },
-                            {
-                              "word" : "war",
-                              "lemma" : "war",
-                              "type" : "token",
-                              "tag" : "NN"
+                              "tag" : "VB"
                             }
                           ]
                         },
-                        "type" : "filter",
-                        "subtype" : "with-modifier",
-                        "modifier" : [
-                          {
-                            "word" : "before",
-                            "lemma" : "before",
-                            "type" : "token",
-                            "tag" : "IN"
-                          }
-                        ]
-                      },
-                      "type" : "property",
-                      "subtype" : "with-filter",
-                      "name" : [
+                        {
+                          "filter" : {
+                            "value" : {
+                              "type" : "value",
+                              "subtype" : "named",
+                              "tokens" : [
+                                {
+                                  "word" : "the",
+                                  "lemma" : "the",
+                                  "type" : "token",
+                                  "tag" : "DT"
+                                },
+                                {
+                                  "word" : "world",
+                                  "lemma" : "world",
+                                  "type" : "token",
+                                  "tag" : "NN"
+                                },
+                                {
+                                  "word" : "war",
+                                  "lemma" : "war",
+                                  "type" : "token",
+                                  "tag" : "NN"
+                                }
+                              ]
+                            },
+                            "type" : "filter",
+                            "subtype" : "with-modifier",
+                            "modifier" : [
+                              {
+                                "word" : "before",
+                                "lemma" : "before",
+                                "type" : "token",
+                                "tag" : "IN"
+                              }
+                            ]
+                          },
+                          "type" : "property",
+                          "subtype" : "with-filter",
+                          "name" : [
 
+                          ]
+                        }
                       ]
-                    }
-                  ]
-                },
-                "type" : "query",
-                "subtype" : "with-property"
-              }
-            }
-            """
-        )
+                    },
+                    "type" : "query",
+                    "subtype" : "with-property"
+                  }
+                }
+                """,
+                query
+            )
+        } else {
+            // Fallback on earlier versions
+        }
     }
 }
