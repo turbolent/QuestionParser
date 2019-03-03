@@ -8,7 +8,7 @@ class TokenTests: XCTestCase {
     func testEncoding() throws {
 
         if #available(OSX 10.13, *) {
-            diffJSON(
+            diffedAssertJSONEqual(
                 """
                 [
                   {

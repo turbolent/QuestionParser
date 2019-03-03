@@ -1,4 +1,6 @@
 import ParserCombinators
+import ParserCombinatorOperators
+
 
 public struct QuestionParsers {
 

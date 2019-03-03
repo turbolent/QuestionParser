@@ -1,5 +1,6 @@
 
 import ParserCombinators
+import ParserCombinatorOperators
 
 
 public struct TokenParsers {

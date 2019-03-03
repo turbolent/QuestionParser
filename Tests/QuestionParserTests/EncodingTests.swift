@@ -36,7 +36,7 @@ class EncodingTests: XCTestCase {
         encoder.outputFormatting = .prettyPrinted
 
         if #available(OSX 10.13, *) {
-            diffJSON(
+            diffedAssertJSONEqual(
                 """
                 {
                   "type" : "list-question",

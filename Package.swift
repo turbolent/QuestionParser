@@ -7,18 +7,21 @@ let package = Package(
     products: [
         .library(
             name: "QuestionParser",
-            targets: ["QuestionParser"]),
+            targets: ["QuestionParser"]
+        ),
     ],
     dependencies: [
-        .package(url: "https://github.com/turbolent/ParserCombinators.git", .exact("0.1.0")),
-        .package(url: "https://github.com/turbolent/DiffedAssertEqual.git", .branch("master")),
+        .package(url: "https://github.com/turbolent/ParserCombinators.git", from: "0.2.0"),
+        .package(url: "https://github.com/turbolent/DiffedAssertEqual.git", from: "0.1.0"),
     ],
     targets: [
         .target(
             name: "QuestionParser",
-            dependencies: ["ParserCombinators"]),
+            dependencies: ["ParserCombinators", "ParserCombinatorOperators"]
+        ),
         .testTarget(
             name: "QuestionParserTests",
-            dependencies: ["QuestionParser", "DiffedAssertEqual"]),
+            dependencies: ["QuestionParser", "DiffedAssertEqual"]
+        ),
     ]
 )
