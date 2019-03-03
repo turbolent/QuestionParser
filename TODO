@@ -1,0 +1,37 @@
+
+- Support for named entities (POS tags are often incorrect):
+  - "Who was on the Apollo 11 mission"
+  - "Who played Gus Fring in Breaking Bad?"
+
+- "where" questions:
+  - "Where does Piccadilly start?"
+
+- "how" questions:
+  - "How did Michael Jackson die?" ~= what was Michael Jackson's cause of death?
+  - "How short is the shortest active NBA player?" ~= what is the height of the shortest active NBA player?
+
+- "Whom" questions:
+  - "Whom did Lance Bass marry?"
+
+- Count before name:
+  - "What are the five boroughs of New York?"
+
+- Pronouns:
+  - "What languages do they speak in Pakistan?" -> what language is spoken in Pakistan?
+
+- Improve conjunctions:
+  - Either ... or ...
+  - Neither ... nor ...
+  - Both ... and ...
+  - Not only ... but also ...
+
+  He was both determined to beat the record and to win over the crowd.
+  He was determined both to beat the record and win over the crowd.
+  The game is suitable for both children and adults.
+  The game is suitable both for children and for adults.
+  The game is suitable both for children and adults.
+  The game is both suitable for children and adults.
+
+- Negation?
+
+
