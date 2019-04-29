@@ -110,6 +110,7 @@ extension QuestionParsersTestsFull {
         ("testQ93", testQ93),
         ("testQ94", testQ94),
         ("testQ95", testQ95),
+        ("testQ96", testQ96),
     ]
 }
 

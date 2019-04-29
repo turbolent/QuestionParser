@@ -2763,4 +2763,30 @@ final class QuestionParsersTestsFull: XCTestCase {
             t("Berkeley", "NNP", "berkeley")
         )
     }
+
+    func testQ96() {
+
+        // Who is 42 years old?
+
+        expectQuestionSuccess(
+            .person(
+                .adjectiveWithFilter(
+                    name: [
+                        t("is", "VBZ", "be"),
+                        t("old", "JJ", "old"),
+                    ],
+                    filter: .plain(.numberWithUnit(
+                        [t("42", "CD", "42")],
+                        unit: [t("years", "NNS", "year")]
+                    ))
+                )
+            ),
+            t("Who", "WP", "who"),
+            t("is", "VBZ", "be"),
+            t("42", "CD", "42"),
+            t("years", "NNS", "year"),
+            t("old", "JJ", "old"),
+            t("?", ".", "?")
+        )
+    }
 }
