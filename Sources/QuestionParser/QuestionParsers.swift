@@ -106,7 +106,7 @@ public struct QuestionParsers {
         named ^^ Value.named
 
     public static let namedValue: Parser<Value, Token> =
-        (simpleNamedValue ~ (TP.word("of") ~ simpleNamedValue).opt()) ^^ {
+        (simpleNamedValue ~ (relationshipWord ~ simpleNamedValue).opt()) ^^ {
             switch $0 {
             case let (first, (token, second)?):
                 return Value.relationship(first, second, token: token)
@@ -200,11 +200,8 @@ public struct QuestionParsers {
     //   - "larger than Europe"
     //   - "smaller than Europe and the US"
 
-    public static let prepositionExceptOf =
-        POS.preposition.filter { $0.word != "of" }
-
     public static let filter: Parser<Filter, Token> =
-        ((POS.comparativeAdjective.opt() ~ prepositionExceptOf).opt() ~ values) ^^ {
+        ((POS.comparativeAdjective.opt() ~ POS.preposition).opt() ~ values) ^^ {
             switch $0 {
             case (nil, let values):
                 return .plain(values)
@@ -453,14 +450,17 @@ public struct QuestionParsers {
             }
         }
 
+    public static let relationshipWord =
+        TP.someWord("of", "by", tag: "IN")
+
     public static let queryOfRelationship: Parser<(Query) -> Query, Token> =
-        (TP.word("of") ~ fullQuery) ^^ {
-            let (sep, nested) = $0
+        (relationshipWord ~ fullQuery) ^^ {
+            let (token, nested) = $0
             return { (query: Query) in
                 .relationship(
                     query,
                     nested,
-                    token: sep
+                    token: token
                 )
             }
         }

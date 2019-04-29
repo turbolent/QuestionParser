@@ -108,18 +108,13 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ4() {
         expectQuestionSuccess(
             .other(
-                .withProperty(
+                .relationship(
                     .named([t("books", "NNS", "book")]),
-                    property: .withFilter(
-                        name: [],
-                        filter: .withModifier(
-                            modifier: [t("by", "IN", "by")],
-                            value: .named([
-                                t("George", "NNP", "george"),
-                                t("Orwell", "NNP", "orwell")
-                            ])
-                        )
-                    )
+                    .named([
+                        t("George", "NNP", "george"),
+                        t("Orwell", "NNP", "orwell")
+                    ]),
+                    token: t("by", "IN", "by")
                 )
             ),
             t("List", "VB", "list"),

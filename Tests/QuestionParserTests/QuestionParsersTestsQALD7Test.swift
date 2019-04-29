@@ -274,31 +274,27 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
 
     func testQ9() {
 
-        // TODO: improve
-
         // Which museum exhibits The Scream by Munch?
 
         expectQuestionSuccess(
             .other(
                 .withProperty(
                     .named([t("museum", "NN", "museum")]),
-                    property: .and([
+                    property:
                         .withFilter(
                             name: [t("exhibits", "VBZ", "exhibit")],
-                            filter: .plain(.named([
-                                t("The", "DT", "the"),
-                                t("Scream", "NNP", "scream")
-                            ]))
-                        ),
-                        .withFilter(
-                            name: [],
-                            filter: .withModifier(
-                                modifier: [t("by", "IN", "by")],
-                                value: .named([t("Munch", "NNP", "munch")])
+                            filter: .plain(
+                                .relationship(
+                                    .named([
+                                        t("The", "DT", "the"),
+                                        t("Scream", "NNP", "scream")
+                                    ]),
+                                    .named([t("Munch", "NNP", "munch")]),
+                                    token: t("by", "IN", "by")
+                                )
                             )
                         )
-                    ])
-                )
+                    )
             ),
             t("Which", "WDT", "which"),
             t("museum", "NN", "museum"),
