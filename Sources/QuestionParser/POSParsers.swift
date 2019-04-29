@@ -5,58 +5,57 @@ public struct POSParsers {
     private typealias TP = TokenParsers
 
     public static let noun =
-        TP.pos("N", strict: false)
+        TP.anyTag("N")
 
     public static let nouns: Parser<[Token], Token> =
         noun.rep(min: 1)
 
     public static let verb =
-        TP.pos("V", strict: false)
+        TP.anyTag("V")
 
     public static let verbs: Parser<[Token], Token> =
         verb.rep(min: 1)
 
     public static let number =
-        TP.pos("CD", strict: true)
+        TP.tag("CD")
 
     public static let numbers: Parser<[Token], Token> =
         number.rep(min: 1)
 
     public static let particle =
-        TP.pos("RP", strict: true)
+        TP.tag("RP")
 
     public static let preposition =
-        TP.pos("IN", strict: true)
-            || TP.pos("TO", strict: true)
+        TP.tag("IN") || TP.tag("TO")
 
     public static let determiner =
-        TP.pos("DT", strict: true)
+        TP.tag("DT")
 
     public static let strictAdjective =
-        TP.pos("JJ", strict: true)
+        TP.tag("JJ")
 
     public static let anyAdjective =
-        TP.pos("JJ", strict: false)
+        TP.anyTag("JJ")
 
     public static let comparativeAdjective =
-        TP.pos("JJR", strict: true)
+        TP.tag("JJR")
 
     public static let superlativeAdjective =
-        TP.pos("JJS", strict: true)
+        TP.tag("JJS")
 
     public static let possessive =
-        TP.pos("POS", strict: true)
+        TP.tag("POS")
 
     public static let coordinatingConjunction =
-        TP.pos("CC", strict: true)
+        TP.tag("CC")
 
     public static let whDeterminer =
-        TP.pos("WDT", strict: true)
+        TP.tag("WDT")
 
     public static let anyAdverb =
-        TP.pos("RB", strict: false)
+        TP.anyTag("RB")
 
     public static let hyphen =
-        TP.pos("HYPH", strict: true)
+        TP.tag("HYPH")
 }
 

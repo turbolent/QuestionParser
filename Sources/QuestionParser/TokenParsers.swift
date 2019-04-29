@@ -7,33 +7,55 @@ public struct TokenParsers {
 
     private typealias Predicate = (Token) -> Bool
 
-    public static func pos(_ tag: String, strict: Bool) -> Parser<Token, Token> {
-        let kind =
-            ["POS", tag, strict ? "" : "*"]
-                .joined(separator: " ")
-        let predicate: Predicate = strict
-            ? { $0.tag == tag }
-            : { $0.tag.hasPrefix(tag) }
-        return elem(
-            kind: kind,
-            predicate: predicate
-        )
+    public static func tag(_ tag: String) -> Parser<Token, Token> {
+        return elem(kind: "tag \(tag)") {
+            $0.tag == tag
+        }
     }
 
-    public static func word(_ word: String) -> Parser<Token, Token> {
-        return elem(kind: "word '\(word)'") {
+    public static func anyTag(_ tag: String) -> Parser<Token, Token> {
+        return elem(kind: "tag \(tag)") {
+            $0.tag.hasPrefix(tag)
+        }
+    }
+
+    public static func word(_ word: String, tag: String? = nil) -> Parser<Token, Token> {
+        let kind = "word '\(word)'"
+
+        let checkWord: Predicate = {
             $0.word.caseInsensitiveCompare(word) == .orderedSame
         }
+
+        if let tag = tag {
+            return elem(kind: kind + " / tag \(tag)") {
+                checkWord($0) && $0.tag == tag
+            }
+        }
+
+        return elem(kind: kind, predicate: checkWord)
     }
 
     public static func lemma(_ lemma: String) -> Parser<Token, Token> {
         return elem(kind: "lemma '\(lemma)'") {
-            $0.lemma.caseInsensitiveCompare(lemma) == .orderedSame
+            $0.lemma == lemma
         }
     }
 
-    public static func someWord(_ firstWord: String, _ moreWords: String...) -> Parser<Token, Token> {
-        return moreWords.reduce(word(firstWord)) { $0 || word($1) }
+    public static func someWord(_ words: String..., tag: String? = nil) -> Parser<Token, Token> {
+        let words = Set(words)
+        let kind = "someWord \(words.map { "'\($0)'" }.joined(separator: ", "))"
+
+        let checkWords: Predicate = {
+            words.contains($0.word.lowercased())
+        }
+
+        if let tag = tag {
+            return elem(kind: kind + " / tag \(tag)") {
+                checkWords($0) && $0.tag == tag
+            }
+        }
+
+        return elem(kind: kind, predicate: checkWords)
     }
 
     public static func words(_ firstWord: String, _ moreWords: String...) -> Parser<[Token], Token> {

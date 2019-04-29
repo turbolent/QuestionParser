@@ -150,8 +150,8 @@ public struct QuestionParsers {
     //   - "\"The Red Victorian\""
 
     public static let quoted: Parser<[Token], Token> = {
-        let opening = TP.pos("``", strict: true)
-        let closing = TP.pos("''", strict: true)
+        let opening = TP.tag("``")
+        let closing = TP.tag("''")
         let anyExceptClosing: Parser<[Token], Token> =
             elem(kind: "not('')", predicate: { $0.tag != "''" }).rep()
         return (opening ~> anyExceptClosing) <~ closing
