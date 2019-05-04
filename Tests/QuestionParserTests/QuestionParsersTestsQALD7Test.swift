@@ -978,21 +978,14 @@ final class QuestionParsersTestsQALD7Test: XCTestCase {
                             t("first", "JJ", "first"),
                             t("season", "NN", "season")
                         ]),
-                        .withProperty(
-                            .named([
-                                t("the", "DT", "the"),
-                                t("HBO", "NNP", "hbo"),
-                                t("television", "NN", "television"),
-                                t("series", "NN", "series")
-                            ]),
-                            property: .withFilter(
-                                name: [],
-                                filter: .plain(.named([
-                                    t("The", "DT", "the"),
-                                    t("Sopranos", "NNPS", "sopranos")
-                                ]))
-                            )
-                        ),
+                        .named([
+                            t("the", "DT", "the"),
+                            t("HBO", "NNP", "hbo"),
+                            t("television", "NN", "television"),
+                            t("series", "NN", "series"),
+                            t("The", "DT", "the"),
+                            t("Sopranos", "NNPS", "sopranos")
+                        ]),
                         token: t("of", "IN", "of")
                     ),
                     token: t("of", "IN", "of")

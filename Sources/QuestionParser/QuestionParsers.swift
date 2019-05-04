@@ -92,11 +92,20 @@ public struct QuestionParsers {
     public static let hyphenedNouns: Parser<[Token], Token> =
         POS.nouns.chainLeft(separator: hyphenSeparator, min: 1).map { $0! }
 
+    // Examples:
+    //    -  "the HBO television series The Sopranos"
+
+    // TODO: add more structure
+
     public static let nounsNamed: Parser<[Token], Token> =
-        (POS.determiner.opt() ^^ { $0.map { [$0] } ?? [] })
-            ~ (POS.anyAdverb.opt() ^^ { $0.map { [$0] } ?? [] })
-            ~ adjectives
-            ~ hyphenedNouns
+        (
+            POS.determiner.opt().toArray()
+                ~ POS.anyAdverb.opt().toArray()
+                ~ adjectives
+                ~ hyphenedNouns
+        ).rep(min: 1, max: 2) ^^ { (parts: [[Token]]) in
+            parts.flatMap { $0 }
+        }
 
     public static let adjectiveNamed: Parser<[Token], Token> =
         POS.determiner ~ adjectives
