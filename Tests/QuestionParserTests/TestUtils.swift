@@ -41,10 +41,10 @@ func expectSuccess<T>(
         usePackratReader: usePackratReader
     )
     switch result {
-    case .success(let value, _):
+    case .success(let actual, _):
         diffedAssertEqual(
-            value,
             expected,
+            actual,
             file: file,
             line: line
         )
@@ -99,10 +99,10 @@ func expectSuccess<T>(
         usePackratReader: usePackratReader
     )
     switch result {
-    case .success(let value, _):
+    case .success(let actual, _):
         diffedAssertEqual(
-            value,
             expected,
+            actual,
             file: file,
             line: line
         )
@@ -131,10 +131,10 @@ func expectSuccess<T>(
         usePackratReader: usePackratReader
     )
     switch result {
-    case .success(let value, _):
+    case .success(let actual, _):
         diffedAssertEqual(
-            value,
             expected,
+            actual,
             file: file,
             line: line
         )
@@ -170,8 +170,8 @@ func expectFailure<T>(
     case .failure(let actualMessage, _):
         if let message = message {
             diffedAssertEqual(
-                actualMessage,
                 message,
+                actualMessage,
                 "Failure, but wrong message",
                 file: file,
                 line: line
@@ -215,8 +215,8 @@ func expectError<T>(
     case .error(let actualMessage, _):
         if let message = message {
             diffedAssertEqual(
-                actualMessage,
                 message,
+                actualMessage,
                 "Error, but wrong message",
                 file: file,
                 line: line
