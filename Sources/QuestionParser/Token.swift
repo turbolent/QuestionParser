@@ -19,6 +19,15 @@ public struct Token: Hashable {
     }
 }
 
+
+extension Token: CustomDebugStringConvertible {
+
+    public var debugDescription: String {
+        return [word, tag, lemma].joined(separator: "/")
+    }
+}
+
+
 extension Token: Encodable {
 
     private enum CodingKeys: CodingKey {
