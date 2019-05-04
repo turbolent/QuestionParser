@@ -7,6 +7,9 @@ public struct QuestionParsers {
     private typealias TP = TokenParsers
     private typealias POS = POSParsers
 
+    public static let relationshipWord =
+        TP.someWord("of", "by", tag: "IN")
+
     // Examples:
     //   - "in which"
     //   - "what"
@@ -105,15 +108,22 @@ public struct QuestionParsers {
     public static let simpleNamedValue: Parser<Value, Token> =
         named ^^ Value.named
 
-    public static let namedValue: Parser<Value, Token> =
-        (simpleNamedValue ~ (relationshipWord ~ simpleNamedValue).opt()) ^^ {
-            switch $0 {
-            case let (first, (token, second)?):
-                return Value.relationship(first, second, token: token)
-            case (let first, nil):
-                return first
+    // Examples:
+    //   - "Obama's children"
+    //   - "Obama's children's mothers"
+
+    // NOTE: handles possessives, which have higher precedence than relationship words,
+    // see namedValue
+
+    public static let namedValue: Parser<Value, Token> = {
+        let separator = POS.possessive ^^ { token in
+            { (a: Value, b: Value) in
+                // NOTE: order
+                Value.relationship(b, a, token: token)
             }
         }
+        return simpleNamedValue.chainLeft(separator: separator, min: 1).map { $0! }
+    }()
 
     // Examples:
     //   - "100"
@@ -131,19 +141,20 @@ public struct QuestionParsers {
         }
 
     // Examples:
-    //   - "Obama's children"
-    //   - "Obama's children's mothers"
+    //   - "the soundtrack for Cameron's Titanic"
+
+    // NOTE: handles relationship words, which have lower precedence than possesives,
+    // see namedValue
 
     public static let namedValues: Parser<Value, Token> = {
-        let moreNamedValues: Parser<[(Token, Value)], Token> =
-            (POS.possessive ~ namedValue).rep()
-        return (namedValue ~ moreNamedValues) ^^ {
-            let (first, rest) = $0
-            return rest.reduce(first) { result, more in
-                let (token, namedValue) = more
-                return .relationship(namedValue, result, token: token)
+        let separator = relationshipWord ^^ { token in
+            { (a: Value, b: Value) in
+                // NOTE: order
+                Value.relationship(a, b, token: token)
             }
         }
+
+        return namedValue.chainRight(separator: separator, min: 1).map { $0! }
     }()
 
     // Examples:
@@ -420,9 +431,9 @@ public struct QuestionParsers {
     //   - "Clinton's children and grandchildren"
 
     public static let queryPossessiveRelationships: Parser<Query, Token> = {
-        let separator = POS.possessive ^^ { sep in
+        let separator = POS.possessive ^^ { token in
             { (a: Query, b: Query) in
-                Query.relationship(b, a, token: sep)
+                Query.relationship(b, a, token: token)
             }
         }
         return queries.chainLeft(separator: separator, min: 1).map { $0! }
@@ -450,8 +461,6 @@ public struct QuestionParsers {
             }
         }
 
-    public static let relationshipWord =
-        TP.someWord("of", "by", tag: "IN")
 
     public static let queryOfRelationship: Parser<(Query) -> Query, Token> =
         (relationshipWord ~ fullQuery) ^^ {
