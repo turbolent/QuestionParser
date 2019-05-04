@@ -635,6 +635,42 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
         )
     }
 
+    func testQ21_2() {
+
+        // Who composed the soundtrack of Cameron's Titanic?
+
+        expectQuestionSuccess(
+            .person(
+                .withFilter(
+                    name: [t("composed", "VBD", "compose")],
+                    filter: .plain(
+                        .relationship(
+                            .named([
+                                t("the", "DT", "the"),
+                                t("soundtrack", "NN", "soundtrack")
+                            ]),
+                            .relationship(
+                                .named([t("Titanic", "NNP", "titanic")]),
+                                .named([t("Cameron", "NNP", "cameron")]),
+                                token: t("'s", "POS", "'s")
+                            ),
+                            token: t("of", "IN", "of")
+                        )
+                    )
+                )
+            ),
+            t("Who", "WP", "who"),
+            t("composed", "VBD", "compose"),
+            t("the", "DT", "the"),
+            t("soundtrack", "NN", "soundtrack"),
+            t("of", "IN", "of"),
+            t("Cameron", "NNP", "cameron"),
+            t("'s", "POS", "'s"),
+            t("Titanic", "NNP", "titanic"),
+            t("?", ".", "?")
+        )
+    }
+
     func testQ22() {
 
         // Show me all basketball players that are higher than 2 meters.

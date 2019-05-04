@@ -141,7 +141,7 @@ public struct QuestionParsers {
         }
 
     // Examples:
-    //   - "the soundtrack for Cameron's Titanic"
+    //   - "the soundtrack of Cameron's Titanic"
 
     // NOTE: handles relationship words, which have lower precedence than possesives,
     // see namedValue
@@ -211,23 +211,38 @@ public struct QuestionParsers {
     //   - "larger than Europe"
     //   - "smaller than Europe and the US"
 
-    public static let filter: Parser<Filter, Token> =
-        ((POS.comparativeAdjective.opt() ~ POS.preposition).opt() ~ values) ^^ {
+    public static let filter: Parser<Filter, Token> = {
+        let withComparativeModifier: (Parser<(Value) -> Filter, Token>) =
+            (POS.comparativeAdjective ~ POS.preposition) ^^ { comparative, preposition in
+                { values in
+                    .withComparativeModifier(
+                        modifier: [comparative, preposition],
+                        value: values
+                    )
+                }
+            }
+
+        let withModifier: (Parser<(Value) -> Filter, Token>) =
+            POS.preposition ^^ { preposition in
+                { values in
+                    .withModifier(
+                        modifier: [preposition],
+                        value: values
+                    )
+                }
+            }
+
+        let modifier = withModifier || withComparativeModifier
+
+        return (modifier.opt() ~ values) ^^ {
             switch $0 {
-            case (nil, let values):
+            case let (nil, values):
                 return .plain(values)
-            case let ((nil, preposition)?, values):
-                return .withModifier(
-                    modifier: [preposition],
-                    value: values
-                )
-            case let ((comparative?, preposition)?, values):
-                return .withComparativeModifier(
-                    modifier: [comparative, preposition],
-                    value: values
-                )
+            case let (modifier?, values):
+                return modifier(values)
             }
         }
+    }()
 
     public static let filters: Parser<Filter, Token> =
         TP.commaOrAndList(
@@ -342,6 +357,7 @@ public struct QuestionParsers {
                 }
 
             } else {
+                // TODO: improve
                 return filters ^^ {
                     .withFilter(name: [], filter: $0)
                 }
