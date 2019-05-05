@@ -7,15 +7,19 @@ public struct QuestionParsers {
     private typealias TP = TokenParsers
     private typealias POS = POSParsers
 
-    public static let relationshipWord =
-        TP.someWord("of", "by", tag: "IN")
+    public static let prepositions =
+        TP.words("in", "to")
+        || TP.words("out", "of")
+        || TP.words("from", "within")
+        || TP.words("up", "to")
+        || POS.preposition.toArray()
 
     // Examples:
     //   - "in which"
     //   - "what"
 
     public static let whichWhat: Parser<Unit, Token> =
-        POS.preposition.opt().ignored()
+        prepositions.opt().ignored()
             ~ TP.someWord("which", "what").ignored()
 
 
@@ -232,8 +236,8 @@ public struct QuestionParsers {
     //   - "smaller than Europe and the US"
 
     public static let filter: Parser<Filter, Token> = {
-        let withComparativeModifier: (Parser<(Value) -> Filter, Token>) =
-            (POS.comparativeAdjective ~ POS.preposition) ^^ { comparative, preposition in
+        let withComparativeModifier: Parser<(Value) -> Filter, Token> =
+            (POS.comparativeAdjective ~ TP.word("than", tag: "IN")) ^^ { comparative, preposition in
                 { values in
                     .withComparativeModifier(
                         modifier: [comparative, preposition],
@@ -242,11 +246,11 @@ public struct QuestionParsers {
                 }
             }
 
-        let withModifier: (Parser<(Value) -> Filter, Token>) =
-            POS.preposition ^^ { preposition in
+        let withModifier: Parser<(Value) -> Filter, Token> =
+            prepositions ^^ { prepositions in
                 { values in
                     .withModifier(
-                        modifier: [preposition],
+                        modifier: prepositions,
                         value: values
                     )
                 }
@@ -300,20 +304,20 @@ public struct QuestionParsers {
     //       "did Orwell write" ~= "were written by" Orwell => "did write Orwell"
 
     public static let inversePropertyAdjectiveSuffix: Parser<([Token], Filter) -> Property, Token> =
-        (POS.strictAdjective ~ POS.preposition) ^^ { adjective, preposition in
+        (POS.strictAdjective ~ prepositions) ^^ { adjective, prepositions in
             return { verbs, filter in
                 .inverseWithFilter(
-                    name: verbs + [adjective, preposition],
+                    name: verbs + [adjective] + prepositions,
                     filter: filter
                 )
             }
     }
 
     public static let inversePropertyVerbsSuffix: Parser<([Token], Filter) -> Property, Token> =
-        (POS.verbs ~ (POS.particle || (POS.preposition <~ notFollowedBy(namedValue))).opt()) ^^ {
+        (POS.verbs ~ (POS.particle.toArray() || (prepositions <~ notFollowedBy(namedValues))).opt()) ^^ {
             let (moreVerbs, particle) = $0
             let rest = moreVerbs
-                + (particle.map { [$0] } ?? [])
+                + (particle ?? [])
             return { verbs, filter in
                 .inverseWithFilter(
                     name: verbs + rest,
@@ -323,10 +327,10 @@ public struct QuestionParsers {
         }
 
     public static let inversePropertyPrepositionSuffix: Parser<([Token], Filter) -> Property, Token> =
-        (POS.preposition <~ notFollowedBy(namedValue)) ^^ { preposition in
+        (prepositions <~ notFollowedBy(namedValues)) ^^ { prepositions in
             return { verbs, filter in
                 .inverseWithFilter(
-                    name: verbs + [preposition],
+                    name: verbs + prepositions,
                     filter: filter
                 )
             }
