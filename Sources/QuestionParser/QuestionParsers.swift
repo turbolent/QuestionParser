@@ -98,6 +98,19 @@ public struct QuestionParsers {
     public static let hyphenedNouns: Parser<[Token], Token> =
         POS.nouns.chainLeft(separator: hyphenSeparator, min: 1).map { $0! }
 
+    public static let namedEntity: Parser<[Token], Token> =
+        Parser { input in
+            if let tokenReader = input as? QuestionReader {
+                return More {
+                    (tokenReader.nameParser).step(input)
+                }
+            }
+            return Done(ParseResult.failure(
+                message: "name parser not available",
+                remaining: input
+            ))
+        }
+
     // Examples:
     //    -  "the HBO television series The Sopranos"
 
@@ -108,7 +121,7 @@ public struct QuestionParsers {
             POS.determiner.opt().toArray()
                 ~ POS.anyAdverb.opt().toArray()
                 ~ adjectives
-                ~ hyphenedNouns
+                ~ (namedEntity || hyphenedNouns)
         ).rep(min: 1, max: 2) ^^ { (parts: [[Token]]) in
             parts.flatMap { $0 }
         }
@@ -117,18 +130,7 @@ public struct QuestionParsers {
         POS.determiner ~ adjectives
 
     public static let named: Parser<[Token], Token> =
-        Parser { input in
-            if let tokenReader = input as? QuestionReader {
-                return More {
-                    tokenReader.nameParser.step(input)
-                }
-            }
-            return Done(ParseResult.failure(
-                message: "name parser not available",
-                remaining: input
-            ))
-        }
-        || nounsNamed
+        nounsNamed
         || adjectiveNamed
 
     public static let simpleNamedValue: Parser<Value, Token> =

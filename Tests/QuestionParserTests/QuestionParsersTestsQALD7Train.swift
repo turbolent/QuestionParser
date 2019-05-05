@@ -75,20 +75,31 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
         // Who was on the Apollo 11 mission?
 
-        // TODO:
-//        expectQuestionSuccess(
-//            .person(
-//                // ...
-//            ),
-//            t("Who", "WP", "who"),
-//            t("was", "VBD", "be"),
-//            t("on", "IN", "on"),
-//            t("the", "DT", "the"),
-//            t("Apollo", "NNP", "apollo"),
-//            t("11", "CD", "11"),
-//            t("mission", "NN", "mission"),
-//            t("?", ".", "?")
-//        )
+        expectQuestionSuccess(
+            .person(
+                .withFilter(
+                    name: [t("was", "VBD", "be")],
+                    filter: .withModifier(
+                        modifier: [t("on", "IN", "on")],
+                        value: .named([
+                            t("the", "DT", "the"),
+                            t("Apollo", "NNP", "apollo"),
+                            t("11", "CD", "11"),
+                            t("mission", "NN", "mission")
+                        ])
+                    )
+                )
+            ),
+            t("Who", "WP", "who"),
+            t("was", "VBD", "be"),
+            t("on", "IN", "on"),
+            t("the", "DT", "the"),
+            t("Apollo", "NNP", "apollo"),
+            t("11", "CD", "11"),
+            t("mission", "NN", "mission"),
+            t("?", ".", "?"),
+            nameParser: TokenParsers.words("Apollo", "11")
+        )
     }
 
     func testQ4() {
@@ -1598,22 +1609,33 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ52() {
 
-        // TODO: "Game of Thrones" is an entity
-//        // Who wrote the Game of Thrones theme?
-//
-//        expectQuestionSuccess(
-//            .person(
-//                //
-//            ),
-//            t("Who", "WP", "who"),
-//            t("wrote", "VBD", "write"),
-//            t("the", "DT", "the"),
-//            t("Game", "NNP", "game"),
-//            t("of", "IN", "of"),
-//            t("Thrones", "NNPS", "thrones"),
-//            t("theme", "NN", "theme"),
-//            t("?", ".", "?")
-//        )
+        // Who wrote the Game of Thrones theme?
+
+        expectQuestionSuccess(
+            .person(
+                .withFilter(
+                    name: [t("wrote", "VBD", "write")],
+                    filter: .plain(
+                        .named([
+                            t("the", "DT", "the"),
+                            t("Game", "NNP", "game"),
+                            t("of", "IN", "of"),
+                            t("Thrones", "NNPS", "thrones"),
+                            t("theme", "NN", "theme")
+                        ])
+                    )
+                )
+            ),
+            t("Who", "WP", "who"),
+            t("wrote", "VBD", "write"),
+            t("the", "DT", "the"),
+            t("Game", "NNP", "game"),
+            t("of", "IN", "of"),
+            t("Thrones", "NNPS", "thrones"),
+            t("theme", "NN", "theme"),
+            t("?", ".", "?"),
+            nameParser: TokenParsers.words("Game", "of", "Thrones")
+        )
     }
 
     func testQ53() {
