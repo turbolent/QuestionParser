@@ -1,6 +1,9 @@
 import ParserCombinators
 import ParserCombinatorOperators
+import Trampoline
 
+
+// NOTE: don't use relationship for relations other than possessives
 
 public struct QuestionParsers {
 
@@ -21,7 +24,6 @@ public struct QuestionParsers {
     public static let whichWhat: Parser<Unit, Token> =
         prepositions.opt().ignored()
             ~ TP.someWord("which", "what").ignored()
-
 
     // Examples:
     //   - "what is"
@@ -136,10 +138,9 @@ public struct QuestionParsers {
     //   - "Obama's children"
     //   - "Obama's children's mothers"
 
-    // NOTE: handles possessives, which have higher precedence than relationship words,
-    // see namedValue
+    // NOTE: handles possessives
 
-    public static let namedValue: Parser<Value, Token> = {
+    public static let namedValues: Parser<Value, Token> = {
         let separator = POS.possessive ^^ { token in
             { (a: Value, b: Value) in
                 // NOTE: order
@@ -163,23 +164,6 @@ public struct QuestionParsers {
                 .map { .numberWithUnit(numbers, unit: $0) }
                 ?? .number(numbers)
         }
-
-    // Examples:
-    //   - "the soundtrack of Cameron's Titanic"
-
-    // NOTE: handles relationship words, which have lower precedence than possesives,
-    // see namedValue
-
-    public static let namedValues: Parser<Value, Token> = {
-        let separator = relationshipWord ^^ { token in
-            { (a: Value, b: Value) in
-                // NOTE: order
-                Value.relationship(a, b, token: token)
-            }
-        }
-
-        return namedValue.chainRight(separator: separator, min: 1).map { $0! }
-    }()
 
     // Examples:
     //   - "\"The Red Victorian\""
@@ -470,7 +454,7 @@ public struct QuestionParsers {
     //   - "California's cities' population sizes"
     //   - "Clinton's children and grandchildren"
 
-    public static let queryPossessiveRelationships: Parser<Query, Token> = {
+    public static let queryRelationship: Parser<Query, Token> = {
         let separator = POS.possessive ^^ { token in
             { (a: Query, b: Query) in
                 Query.relationship(b, a, token: token)
@@ -501,23 +485,8 @@ public struct QuestionParsers {
             }
         }
 
-
-    public static let queryOfRelationship: Parser<(Query) -> Query, Token> =
-        (relationshipWord ~ fullQuery) ^^ {
-            let (token, nested) = $0
-            return { (query: Query) in
-                .relationship(
-                    query,
-                    nested,
-                    token: token
-                )
-            }
-        }
-
     public static let fullQuery: Parser<Query, Token> =
-        ((queryPossessiveRelationships <~ (POS.whDeterminer || TP.word("who")).opt())
-            ~ (queryProperties ||| queryOfRelationship).opt())
-        ^^ {
+        ((queryRelationship <~ (POS.whDeterminer || TP.word("who")).opt()) ~ queryProperties.opt()) ^^ {
             switch $0 {
             case (let query, nil):
                 return query

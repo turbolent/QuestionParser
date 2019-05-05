@@ -3,6 +3,7 @@ public indirect enum Value: Equatable {
     case named([Token])
     case number([Token])
     case numberWithUnit([Token], unit: [Token])
+    case withProperty(Value, property: Property)
     case relationship(Value, Value, token: Token)
     case or([Value])
     case and([Value])
@@ -19,12 +20,15 @@ extension Value: Encodable {
         case second
         case token
         case values
+        case value
+        case property
     }
 
     private enum Subtype: String, Encodable {
         case named
         case number
         case numberWithUnit = "number-with-unit"
+        case withProperty = "with-property"
         case relationship
         case or
         case and
@@ -53,6 +57,11 @@ extension Value: Encodable {
             try container.encode(first, forKey: .first)
             try container.encode(second, forKey: .second)
             try container.encode(token, forKey: .token)
+
+        case let .withProperty(value, property: property):
+            try container.encode(Subtype.withProperty, forKey: .subtype)
+            try container.encode(value, forKey: .value)
+            try container.encode(property, forKey: .property)
 
         case let .or(values):
             try container.encode(Subtype.or, forKey: .subtype)
