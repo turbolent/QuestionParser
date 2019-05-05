@@ -133,7 +133,7 @@ public struct QuestionParsers {
         nounsNamed
         || adjectiveNamed
 
-    public static let simpleNamedValue: Parser<Value, Token> =
+    public static let namedValue: Parser<Value, Token> =
         named ^^ Value.named
 
     // Examples:
@@ -149,7 +149,7 @@ public struct QuestionParsers {
                 Value.relationship(b, a, token: token)
             }
         }
-        return simpleNamedValue.chainLeft(separator: separator, min: 1).map { $0! }
+        return namedValue.chainLeft(separator: separator, min: 1).map { $0! }
     }()
 
     // Examples:
@@ -201,7 +201,10 @@ public struct QuestionParsers {
             case let (value, nil):
                 return value
             case let (value, property?):
-                return Value.withProperty(value, property: property)
+                return Value.withProperty(
+                    value,
+                    property: property
+                )
             }
         }
 
