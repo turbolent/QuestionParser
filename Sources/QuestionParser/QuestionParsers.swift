@@ -176,6 +176,9 @@ public struct QuestionParsers {
         return (opening ~> anyExceptClosing) <~ closing
     }()
 
+    public static let nestedProperties =
+        makePropertiesParser(withProperty || nestedProperty)
+
     // Examples:
     //   - "America"
     //   - "dystopian societies"
@@ -185,9 +188,20 @@ public struct QuestionParsers {
     //   - "two million inhabitants"
 
     public static let value: Parser<Value, Token> =
-        namedValues
-            || numericValue
-            || (quoted ^^ Value.named)
+        (
+            (namedValues
+                || numericValue
+                || (quoted ^^ Value.named)
+            )
+                ~ nestedProperties.opt()
+        ) ^^ {
+            switch $0 {
+            case let (value, nil):
+                return value
+            case let (value, property?):
+                return Value.withProperty(value, property: property)
+            }
+        }
 
     public static let values: Parser<Value, Token> =
         TP.commaOrAndList(
@@ -218,6 +232,7 @@ public struct QuestionParsers {
     //   - "in Europe"
     //   - "larger than Europe"
     //   - "smaller than Europe and the US"
+    //   - "out of wood"
 
     public static let filter: Parser<Filter, Token> = {
         let withComparativeModifier: Parser<(Value) -> Filter, Token> =
@@ -335,14 +350,22 @@ public struct QuestionParsers {
             }
         }
 
-    public static let complexProperty: Parser<Property, Token> =
+    public static let nestedProperty: Parser<Property, Token> =
+        ((POS.whDeterminer ~> POS.verbs).opt() ~ filters) ^^ {
+            let (property, filter) = $0
+            return .withFilter(
+                name: property ?? [],
+                filter: filter
+            )
+        }
+
+    public static let initialProperty: Parser<Property, Token> =
         (POS.whDeterminer.opt() ~> POS.verbs.opt()).flatMap {
             if let verbs = $0 {
                 // TODO: more after filters only when verb is auxiliary do/does/did
 
                 let moreParser: Parser<(([Token], Filter) -> Property)?, Token> = {
                     if verbs.count == 1, let verb = verbs.first {
-
                         if verb.isAuxiliaryVerb {
                             return (inversePropertySuffix || propertyAdjectiveSuffix).opt()
                         } else {
@@ -378,10 +401,6 @@ public struct QuestionParsers {
             return .withFilter(name: [name], filter: filter)
         }
 
-    public static let property: Parser<Property, Token> =
-        withProperty
-            || complexProperty
-
 
     // Examples:
     //   - "died before 1900 or after 1910 or were born in 1923"
@@ -389,8 +408,8 @@ public struct QuestionParsers {
     //     (NOTE: 2 properties, "and" is optional,
     //            valid when starting with "which books")
 
-    public static let properties: Parser<Property, Token> =
-        TP.commaOrAndList(
+    private static func makePropertiesParser(_ property: Parser<Property, Token>) -> Parser<Property, Token> {
+        return TP.commaOrAndList(
             parser: property,
             andReducer: {
                 .and($0.flatMap { (property: Property) -> [Property] in
@@ -412,6 +431,7 @@ public struct QuestionParsers {
             },
             andOptional: true
         )
+    }
 
     // Examples:
     //   - "youngest children"
@@ -463,6 +483,9 @@ public struct QuestionParsers {
         return queries.chainLeft(separator: separator, min: 1).map { $0! }
     }()
 
+    public static let initialProperties =
+        makePropertiesParser(withProperty || initialProperty)
+
     // Examples
     //   - "people"
     //   - "actors that died in Berlin"
@@ -476,7 +499,7 @@ public struct QuestionParsers {
     //       before applying inner superlative
 
     public static let queryProperties: Parser<(Query) -> Query, Token> =
-        properties ^^ { property in
+        initialProperties ^^ { property in
             { (query: Query) in
                 .withProperty(
                     query,
@@ -520,7 +543,7 @@ public struct QuestionParsers {
     //   - "who was born in Europe and died in the US"
 
     public static let personQuestion: Parser<ListQuestion, Token> =
-        (TP.word("who") ~> properties)
+        (TP.word("who") ~> initialProperties)
             ^^ ListQuestion.person
 
     // Examples:
@@ -528,7 +551,7 @@ public struct QuestionParsers {
     //   - "what was authored by George Orwell"
 
     public static let thingQuestion: Parser<ListQuestion, Token> =
-        (TP.word("what") ~> properties)
+        (TP.word("what") ~> initialProperties)
             ^^ ListQuestion.thing
 
     public static let question: Parser<ListQuestion, Token> =

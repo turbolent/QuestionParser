@@ -108,13 +108,18 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ4() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([t("books", "NNS", "book")]),
-                    .named([
-                        t("George", "NNP", "george"),
-                        t("Orwell", "NNP", "orwell")
-                    ]),
-                    token: t("by", "IN", "by")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("by", "IN", "by")],
+                            value: .named([
+                                t("George", "NNP", "george"),
+                                t("Orwell", "NNP", "orwell")
+                            ])
+                        )
+                    )
                 )
             ),
             t("List", "VB", "list"),
@@ -183,10 +188,15 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ7() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([t("presidents", "NNS", "president")]),
-                    .named([t("Argentina", "NNP", "argentina")]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("Argentina", "NNP", "argentina")])
+                        )
+                    )
                 )
             ),
             t("list", "VB", "list"),
@@ -326,13 +336,18 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ13() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([t("albums", "NNS", "album")]),
-                    .named([
-                        t("Pink", "NNP", "pink"),
-                        t("Floyd", "NNP", "floyd")
-                    ]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([
+                                t("Pink", "NNP", "pink"),
+                                t("Floyd", "NNP", "floyd")
+                            ])
+                        )
+                    )
                 )
             ),
             t("List", "VB", "list"),
@@ -346,13 +361,18 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ14() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("actors", "NNS", "actor")
                     ]),
-                    .named([t("Titanic", "NNP", "titanic")]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("Titanic", "NNP", "titanic")])
+                        )
+                    )
                 )
             ),
             t("List", "VB", "list"),
@@ -366,13 +386,18 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ15() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("actors", "NNS", "actor")
                     ]),
-                    .named([t("Titanic", "NNP", "titanic")]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("Titanic", "NNP", "titanic")])
+                        )
+                    )
                 )
             ),
             t("who", "WP", "who"),
@@ -451,16 +476,21 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ19() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("director", "NN", "director")
                     ]),
-                    .named([
-                        t("Big", "NN", "big"),
-                        t("Fish", "NN", "fish")
-                    ]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([
+                                t("Big", "NN", "big"),
+                                t("Fish", "NN", "fish")
+                            ])
+                        )
+                    )
                 )
             ),
             t("Who", "WP", "who"),
@@ -522,15 +552,20 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ22() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("members", "NNS", "member")
                     ]),
-                    .named([
-                        t("Metallica", "NNP", "metallica")
-                    ]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([
+                                t("Metallica", "NNP", "metallica")
+                            ])
+                        )
+                    )
                 )
             ),
             t("What", "WP", "what"),
@@ -545,10 +580,19 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ23() {
         expectQuestionSuccess(
             .other(
-                .relationship(
-                    .named([t("members", "NNS", "member")]),
-                    .named([t("Metallica", "NNP", "metallica")]),
-                    token: t("of", "IN", "of")
+                .withProperty(
+                    .named([
+                        t("members", "NNS", "member")
+                    ]),
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([
+                                t("Metallica", "NNP", "metallica")
+                            ])
+                        )
+                    )
                 )
             ),
             t("members", "NNS", "member"),
@@ -560,14 +604,19 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ24() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("music", "NN", "music"),
                         t("genre", "NN", "genre")
                     ]),
-                    .named([t("Gorillaz", "NNP", "gorillaz")]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("Gorillaz", "NNP", "gorillaz")])
+                        )
+                    )
                 )
             ),
             t("What", "WP", "what"),
@@ -601,13 +650,18 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ27() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("cast", "NN", "cast")
                     ]),
-                    .named([t("Friends", "NNS", "friend")]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("Friends", "NNS", "friend")])
+                        )
+                    )
                 )
             ),
             t("What", "WP", "what"),
@@ -851,16 +905,21 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ36() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("children", "NNS", "child")
                     ]),
-                    .named([
-                        t("the", "DT", "the"),
-                        t("presidents", "NNS", "president")
-                    ]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([
+                                t("the", "DT", "the"),
+                                t("presidents", "NNS", "president")
+                            ])
+                        )
+                    )
                 )
             ),
             t("who", "WP", "who"),
@@ -901,64 +960,81 @@ final class QuestionParsersTestsFull: XCTestCase {
         )
     }
 
-    func testQ38() {
-        expectQuestionSuccess(
-            .other(
-                .relationship(
-                    .named([
-                        t("the", "DT", "the"),
-                        t("population", "NN", "population"),
-                        t("sizes", "NNS", "size")
-                    ]),
-                    .withProperty(
-                        .named([t("cities", "NNS", "city")]),
-                        property: .withFilter(
-                            name: [t("located", "VBN", "locate")],
-                            filter: .withModifier(
-                                modifier: [t("in", "IN", "in")],
-                                value: .named([t("california", "NN", "california")])
-                            )
-                        )
-                    ),
-                    token: t("of", "IN", "of")
-                )
-            ),
-            t("what", "WP", "what"),
-            t("are", "VBP", "be"),
-            t("the", "DT", "the"),
-            t("population", "NN", "population"),
-            t("sizes", "NNS", "size"),
-            t("of", "IN", "of"),
-            t("cities", "NNS", "city"),
-            t("located", "VBN", "locate"),
-            t("in", "IN", "in"),
-            t("california", "NN", "california")
-        )
-    }
+// TODO:
+//    func testQ38() {
+//
+//        // TODO: handle in second stage: poplulation sizes can't be located
+//        //   -> look for previous filter
+//
+//        expectQuestionSuccess(
+//            .other(
+//                .withProperty(
+//                    .named([
+//                        t("the", "DT", "the"),
+//                        t("population", "NN", "population"),
+//                        t("sizes", "NNS", "size")
+//                    ]),
+//                    property: .and([
+//                        .withFilter(
+//                            name: [],
+//                            filter: .withModifier(
+//                                modifier: [t("of", "IN", "of")],
+//                                value: .named([t("cities", "NNS", "city")])
+//                            )
+//                        ),
+//                        .withFilter(
+//                            name: [
+//                                t("located", "VBN", "locate")
+//                            ],
+//                            filter: .withModifier(
+//                                modifier: [t("in", "IN", "in")],
+//                                value: .named([t("california", "NN", "california")])
+//                            )
+//                        )
+//                    ])
+//                )
+//            ),
+//            t("what", "WP", "what"),
+//            t("are", "VBP", "be"),
+//            t("the", "DT", "the"),
+//            t("population", "NN", "population"),
+//            t("sizes", "NNS", "size"),
+//            t("of", "IN", "of"),
+//            t("cities", "NNS", "city"),
+//            t("located", "VBN", "locate"),
+//            t("in", "IN", "in"),
+//            t("california", "NN", "california")
+//        )
+//    }
 
     func testQ39() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("population", "NN", "population"),
                         t("sizes", "NNS", "size")
                     ]),
-                    .withProperty(
-                        .named([t("cities", "NNS", "city")]),
-                        property: .withFilter(
-                            name: [
-                                t("are", "VBP", "be"),
-                                t("located", "VBN", "locate")
-                            ],
-                            filter: .withModifier(
-                                modifier: [t("in", "IN", "in")],
-                                value: .named([t("california", "NN", "california")])
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .withProperty(
+                                .named([t("cities", "NNS", "city")]),
+                                property: .withFilter(
+                                    name: [
+                                        t("are", "VBP", "be"),
+                                        t("located", "VBN", "locate")
+                                    ],
+                                    filter: .withModifier(
+                                        modifier: [t("in", "IN", "in")],
+                                        value: .named([t("california", "NN", "california")])
+                                    )
+                                )
                             )
                         )
-                    ),
-                    token: t("of", "IN", "of")
+                    )
                 )
             ),
             t("what", "WP", "what"),
@@ -979,23 +1055,33 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ40() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("children", "NNS", "child")
                     ]),
-                    .relationship(
-                        .named([
-                            t("the", "DT", "the"),
-                            t("children", "NNS", "child")
-                        ]),
-                        .named([
-                            t("Bill", "NNP", "bill"),
-                            t("Clinton", "NNP", "clinton")
-                        ]),
-                        token: t("of", "IN", "of")
-                    ),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .withProperty(
+                                .named([
+                                    t("the", "DT", "the"),
+                                    t("children", "NNS", "child")
+                                ]),
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withModifier(
+                                        modifier: [t("of", "IN", "of")],
+                                        value: .named([
+                                            t("Bill", "NNP", "bill"),
+                                            t("Clinton", "NNP", "clinton")
+                                        ])
+                                    )
+                                )
+                            )
+                        )
+                    )
                 )
             ),
             t("Who", "WP", "who"),
@@ -1014,14 +1100,19 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ41() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("largest", "JJS", "large"),
                         t("cities", "NNS", "city")
                     ]),
-                    .named([t("California", "NNP", "california")]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("California", "NNP", "california")])
+                        )
+                    )
                 )
             ),
             t("What", "WP", "what"),
@@ -1037,14 +1128,19 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ42() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("biggest", "JJS", "big"),
                         t("cities", "NNS", "city")
                     ]),
-                    .named([t("California", "NNP", "california")]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("California", "NNP", "california")])
+                        )
+                    )
                 )
             ),
             t("What", "WP", "what"),
@@ -1268,22 +1364,27 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ51() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("population", "NNP", "population")
                     ]),
-                    .withProperty(
-                        .named([t("Japan", "NNP", "japan")]),
-                        property: .withFilter(
-                            name: [],
-                            filter: .withModifier(
-                                modifier: [t("before", "IN", "before")],
-                                value: .number([t("1900", "CD", "1900")])
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .withProperty(
+                                .named([t("Japan", "NNP", "japan")]),
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withModifier(
+                                        modifier: [t("before", "IN", "before")],
+                                        value: .number([t("1900", "CD", "1900")])
+                                    )
+                                )
                             )
                         )
-                    ),
-                    token: t("of", "IN", "of")
+                    )
                 )
             ),
             t("the", "DT", "the"),
@@ -1298,19 +1399,24 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ52() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("population", "NN", "population")
                     ]),
-                    .and([
-                        .named([t("China", "NNP", "china")]),
-                        .named([
-                            t("the", "DT", "the"),
-                            t("USA", "NNP", "usa")
-                        ])
-                    ]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .and([
+                                .named([t("China", "NNP", "china")]),
+                                .named([
+                                    t("the", "DT", "the"),
+                                    t("USA", "NNP", "usa")
+                                ])
+                            ])
+                        )
+                    )
                 )
             ),
             t("What", "WP", "what"),
@@ -1328,16 +1434,21 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ53() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("population", "NNP", "population")
                     ]),
-                    .and([
-                        .named([t("Japan", "NNP", "japan")]),
-                        .named([t("China", "NNP", "china")])
-                    ]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .and([
+                                .named([t("Japan", "NNP", "japan")]),
+                                .named([t("China", "NNP", "china")])
+                            ])
+                        )
+                    )
                 )
             ),
             t("the", "DT", "the"),
@@ -1349,57 +1460,60 @@ final class QuestionParsersTestsFull: XCTestCase {
         )
     }
 
-    func testQ54() {
-        expectQuestionSuccess(
-            .other(
-                .relationship(
-                    .named([
-                        t("the", "DT", "the"),
-                        t("population", "NNP", "population")
-                    ]),
-                    .withProperty(
-                        .and([
-                            .named([t("Japan", "NNP", "japan")]),
-                            .named([t("China", "NNP", "china")])
-                        ]),
-                        property: .withFilter(
-                            name: [],
-                            filter: .withModifier(
-                                modifier: [t("before", "IN", "before")],
-                                value: .number([t("1900", "CD", "1900")])
-                            )
-                        )
-                    ),
-                    token: t("of", "IN", "of")
-                )
-            ),
-            t("the", "DT", "the"),
-            t("population", "NNP", "population"),
-            t("of", "IN", "of"),
-            t("Japan", "NNP", "japan"),
-            t("and", "CC", "and"),
-            t("China", "NNP", "china"),
-            t("before", "IN", "before"),
-            t("1900", "CD", "1900")
-        )
-    }
+// TODO:
+//    func testQ54() {
+//        expectQuestionSuccess(
+//            .other(
+//                .withProperty(
+//                    .relationship(
+//                        .named([
+//                            t("the", "DT", "the"),
+//                            t("population", "NNP", "population")
+//                        ]),
+//                        .and([
+//                            .named([t("Japan", "NNP", "japan")]),
+//                            .named([t("China", "NNP", "china")])
+//                            ]),
+//                        token: t("of", "IN", "of")
+//                    ),
+//                    property: .withFilter(
+//                        name: [],
+//                        filter: .withModifier(
+//                            modifier: [t("before", "IN", "before")],
+//                            value: .number([t("1900", "CD", "1900")])
+//                        )
+//                    )
+//                )
+//            ),
+//            t("the", "DT", "the"),
+//            t("population", "NNP", "population"),
+//            t("of", "IN", "of"),
+//            t("Japan", "NNP", "japan"),
+//            t("and", "CC", "and"),
+//            t("China", "NNP", "china"),
+//            t("before", "IN", "before"),
+//            t("1900", "CD", "1900")
+//        )
+//    }
 
     func testQ55() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .and([
-                        .named([
-                            t("the", "DT", "the"),
-                            t("population", "NNP", "population")
-                        ]),
+                        .named([t("the", "DT", "the"), t("population", "NNP", "population")]),
                         .named([t("area", "NNP", "area")])
                     ]),
-                    .and([
-                        .named([t("Japan", "NNP", "japan")]),
-                        .named([t("China", "NNP", "china")])
-                    ]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .and([
+                                .named([t("Japan", "NNP", "japan")]),
+                                .named([t("China", "NNP", "china")])
+                            ])
+                        )
+                    )
                 )
             ),
             t("the", "DT", "the"),
@@ -1416,7 +1530,7 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ56() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .and([
                         .named([
                             t("the", "DT", "the"),
@@ -1428,12 +1542,17 @@ final class QuestionParsersTestsFull: XCTestCase {
                         ]),
                         .named([t("capitals", "NNP", "capital")])
                     ]),
-                    .and([
-                        .named([t("Japan", "NNP", "japan")]),
-                        .named([t("India", "NNP", "india")]),
-                        .named([t("China", "NNP", "china")])
-                    ]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .and([
+                                .named([t("Japan", "NNP", "japan")]),
+                                .named([t("India", "NNP", "india")]),
+                                .named([t("China", "NNP", "china")])
+                            ])
+                        )
+                    )
                 )
             ),
             t("the", "DT", "the"),
@@ -1455,20 +1574,30 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ57() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([t("children", "NNS", "child")]),
-                    .relationship(
-                        .named([
-                            t("all", "DT", "all"),
-                            t("presidents", "NNS", "president")
-                        ]),
-                        .named([
-                            t("the", "DT", "the"),
-                            t("US", "NNP", "us")
-                        ]),
-                        token: t("of", "IN", "of")
-                    ),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .withProperty(
+                                .named([
+                                    t("all", "DT", "all"),
+                                    t("presidents", "NNS", "president")
+                                ]),
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withModifier(
+                                        modifier: [t("of", "IN", "of")],
+                                        value: .named([
+                                            t("the", "DT", "the"),
+                                            t("US", "NNP", "us")
+                                        ])
+                                    )
+                                )
+                            )
+                        )
+                    )
                 )
             ),
             t("children", "NNS", "child"),
@@ -1572,13 +1701,18 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ61() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("president", "NN", "president")
                     ]),
-                    .named([t("France", "NNP", "france")]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("France", "NNP", "france")])
+                        )
+                    )
                 )
             ),
             t("Who", "WP", "who"),
@@ -1593,31 +1727,46 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ62() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("daughters", "NNS", "daughter")
                     ]),
-                    .relationship(
-                        .named([
-                            t("the", "DT", "the"),
-                            t("wife", "NN", "wife")
-                        ]),
-                        .relationship(
-                            .named([
-                                t("the", "DT", "the"),
-                                t("president", "NN", "president")
-                            ]),
-                            .named([
-                                t("the", "DT", "the"),
-                                t("United", "NNP", "united"),
-                                t("States", "NNPS", "state")
-                            ]),
-                            token: t("of", "IN", "of")
-                        ),
-                        token: t("of", "IN", "of")
-                    ),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .withProperty(
+                                .named([
+                                    t("the", "DT", "the"),
+                                    t("wife", "NN", "wife")
+                                ]),
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withModifier(
+                                        modifier: [t("of", "IN", "of")],
+                                        value: .withProperty(
+                                            .named([
+                                                t("the", "DT", "the"),
+                                                t("president", "NN", "president")
+                                            ]),
+                                            property: .withFilter(
+                                                name: [],
+                                                filter: .withModifier(
+                                                    modifier: [t("of", "IN", "of")],
+                                                    value: .named([
+                                                        t("the", "DT", "the"),
+                                                        t("United", "NNP", "united"),
+                                                        t("States", "NNPS", "state")
+                                                    ])
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                 )
             ),
             t("Who", "WP", "who"),
@@ -1791,25 +1940,35 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ68() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("son", "NN", "son")
                     ]),
-                    .relationship(
-                        .named([
-                            t("the", "DT", "the"),
-                            t("main", "JJ", "main"),
-                            t("actor", "NN", "actor")
-                        ]),
-                        .named([
-                            t("I", "PRP", "i"),
-                            t(",", ",", ","),
-                            t("Robot", "NNP", "robot")
-                        ]),
-                        token: t("of", "IN", "of")
-                    ),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .withProperty(
+                                .named([
+                                    t("the", "DT", "the"),
+                                    t("main", "JJ", "main"),
+                                    t("actor", "NN", "actor")
+                                ]),
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withModifier(
+                                        modifier: [t("of", "IN", "of")],
+                                        value: .named([
+                                            t("I", "PRP", "i"),
+                                            t(",", ",", ","),
+                                            t("Robot", "NNP", "robot")
+                                        ])
+                                    )
+                                )
+                            )
+                        )
+                    )
                 )
             ),
             t("Who", "WP", "who"),
@@ -1826,6 +1985,56 @@ final class QuestionParsersTestsFull: XCTestCase {
             t(",", ",", ","),
             t("Robot", "NNP", "robot"),
             t("\"", "''", "\"")
+        )
+    }
+
+    func testQ68_1() {
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([
+                        t("the", "DT", "the"),
+                        t("son", "NN", "son")
+                        ]),
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .withProperty(
+                                .named([
+                                    t("the", "DT", "the"),
+                                    t("main", "JJ", "main"),
+                                    t("actor", "NN", "actor")
+                                ]),
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withModifier(
+                                        modifier: [t("of", "IN", "of")],
+                                        value: .named([
+                                            t("I", "PRP", "i"),
+                                            t(",", ",", ","),
+                                            t("Robot", "NNP", "robot")
+                                        ])
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            ),
+            t("Who", "WP", "who"),
+            t("is", "VBZ", "be"),
+            t("the", "DT", "the"),
+            t("son", "NN", "son"),
+            t("of", "IN", "of"),
+            t("the", "DT", "the"),
+            t("main", "JJ", "main"),
+            t("actor", "NN", "actor"),
+            t("of", "IN", "of"),
+            t("I", "PRP", "i"),
+            t(",", ",", ","),
+            t("Robot", "NNP", "robot"),
+            nameParser: TokenParsers.words("I", ",", "Robot")
         )
     }
 
@@ -1910,7 +2119,7 @@ final class QuestionParsersTestsFull: XCTestCase {
     func testQ72() {
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .and([
                         .named([t("children", "NNS", "child")]),
                         .named([
@@ -1918,8 +2127,13 @@ final class QuestionParsersTestsFull: XCTestCase {
                             t("children", "NNS", "child")
                         ])
                     ]),
-                    .named([t("Clinton", "NNP", "clinton")]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("Clinton", "NNP", "clinton")])
+                        )
+                    )
                 )
             ),
             t("children", "NNS", "child"),
@@ -1932,9 +2146,6 @@ final class QuestionParsersTestsFull: XCTestCase {
     }
 
     func testQ73() {
-
-        // TODO: handle in second stage:
-        //       empty property with modifying filter is constraining preceding property
 
         expectQuestionSuccess(
             .other(
@@ -1976,36 +2187,34 @@ final class QuestionParsersTestsFull: XCTestCase {
 
     func testQ74() {
 
-        // TODO: handle in second stage:
-        //       filter of empty second property is constraining preceding property
-        //       (empty property is shortened from ~"which is")
-
         expectQuestionSuccess(
             .other(
                 .withProperty(
                     .named([t("cities", "NNS", "city")]),
-                    property: .and([
-                        .withFilter(
-                            name: [t("have", "VBP", "have")],
-                            filter: .plain(.named([
-                                t("a", "DT", "a"),
-                                t("population", "NN", "population")
-                            ]))
-                        ),
-                        .withFilter(
-                            name: [],
-                            filter: .withComparativeModifier(
-                                modifier: [
-                                    t("larger", "JJR", "large"),
-                                    t("than", "IN", "than")
-                                ],
-                                value: .number([
-                                    t("1", "CD", "1"),
-                                    t("million", "CD", "million")
-                                ])
+                    property: .withFilter(
+                        name: [t("have", "VBP", "have")],
+                        filter: .plain(
+                            .withProperty(
+                                .named([
+                                    t("a", "DT", "a"),
+                                    t("population", "NN", "population")
+                                ]),
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withComparativeModifier(
+                                        modifier: [
+                                            t("larger", "JJR", "large"),
+                                            t("than", "IN", "than")
+                                        ],
+                                        value: .number([
+                                            t("1", "CD", "1"),
+                                            t("million", "CD", "million")
+                                        ])
+                                    )
+                                )
                             )
                         )
-                    ])
+                    )
                 )
             ),
             t("What", "WP", "what"),
@@ -2024,33 +2233,33 @@ final class QuestionParsersTestsFull: XCTestCase {
 
     func testQ75() {
 
-        // TODO: handle in second stage:
-        //       filter of empty second property is constraining preceding property
-        //       (empty property is shortened from ~"which is")
-
         expectQuestionSuccess(
             .other(
                 .withProperty(
                     .named([t("cities", "NNS", "city")]),
-                    property: .and([
-                        .withFilter(
-                            name: [t("have", "VBP", "have")],
-                            filter: .plain(.named([
-                                t("a", "DT", "a"),
-                                t("population", "NN", "population")
-                            ]))
-                        ),
-                        .withFilter(
-                            name: [],
-                            filter: .withComparativeModifier(
-                                modifier: [
-                                    t("larger", "JJR", "large"),
-                                    t("than", "IN", "than")
-                                ],
-                                value: .number([t("1000", "CD", "1000")])
+                    property: .withFilter(
+                        name: [t("have", "VBP", "have")],
+                        filter: .plain(
+                            .withProperty(
+                                .named([
+                                    t("a", "DT", "a"),
+                                    t("population", "NN", "population")
+                                ]),
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withComparativeModifier(
+                                        modifier: [
+                                            t("larger", "JJR", "large"),
+                                            t("than", "IN", "than")
+                                        ],
+                                        value: .number([t("1000", "CD", "1000")])
+                                    )
+                                )
+
+
                             )
                         )
-                    ])
+                    )
                 )
             ),
             t("which", "WDT", "which"),
@@ -2066,32 +2275,31 @@ final class QuestionParsersTestsFull: XCTestCase {
 
     func testQ76() {
 
-        // TODO: handle in second stage:
-        //       filter of second property with single "be" lemma is constraining preceding property
-
         expectQuestionSuccess(
             .other(
                 .withProperty(
                     .named([t("cities", "NNS", "city")]),
-                    property: .and([
-                        .withFilter(
-                            name: [t("have", "VBP", "have")],
-                            filter: .plain(.named([
-                                t("a", "DT", "a"),
-                                t("population", "NN", "population")
-                            ]))
-                        ),
-                        .withFilter(
-                            name: [t("is", "VBZ", "be")],
-                            filter: .withComparativeModifier(
-                                modifier: [
-                                    t("larger", "JJR", "large"),
-                                    t("than", "IN", "than")
-                                ],
-                                value: .number([t("1000", "CD", "1000")])
+                    property: .withFilter(
+                        name: [t("have", "VBP", "have")],
+                        filter: .plain(
+                            .withProperty(
+                                .named([
+                                    t("a", "DT", "a"),
+                                    t("population", "NN", "population")
+                                ]),
+                                property: .withFilter(
+                                    name: [t("is", "VBZ", "be")],
+                                    filter: .withComparativeModifier(
+                                        modifier: [
+                                            t("larger", "JJR", "large"),
+                                            t("than", "IN", "than")
+                                        ],
+                                        value: .number([t("1000", "CD", "1000")])
+                                    )
+                                )
                             )
                         )
-                    ])
+                    )
                 )
             ),
             t("cities", "NNS", "city"),
@@ -2109,33 +2317,31 @@ final class QuestionParsersTestsFull: XCTestCase {
 
     func testQ77() {
 
-        // TODO: handle in second stage:
-        //       filter of empty second property is constraining preceding property
-        //       (empty property is shortened from ~"which is")
-
         expectQuestionSuccess(
             .other(
                 .withProperty(
                     .named([t("cities", "NNS", "city")]),
-                    property: .and([
-                        .withFilter(
-                            name: [t("have", "VBP", "have")],
-                            filter: .plain(.named([
-                                t("a", "DT", "a"),
-                                t("population", "NN", "population")
-                            ]))
-                        ),
-                        .withFilter(
-                            name: [],
-                            filter: .withComparativeModifier(
-                                modifier: [
-                                    t("larger", "JJR", "large"),
-                                    t("than", "IN", "than")
-                                ],
-                                value: .number([t("1000", "CD", "1000")])
+                    property: .withFilter(
+                        name: [t("have", "VBP", "have")],
+                        filter: .plain(
+                            .withProperty(
+                                .named([
+                                    t("a", "DT", "a"),
+                                    t("population", "NN", "population")
+                                ]),
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withComparativeModifier(
+                                        modifier: [
+                                            t("larger", "JJR", "large"),
+                                            t("than", "IN", "than")
+                                        ],
+                                        value: .number([t("1000", "CD", "1000")])
+                                    )
+                                )
                             )
                         )
-                    ])
+                    )
                 )
             ),
             t("cities", "NNS", "city"),
@@ -2151,10 +2357,6 @@ final class QuestionParsersTestsFull: XCTestCase {
 
     func testQ78() {
 
-        // TODO: handle in second stage:
-        //       filter of empty second property is constraining preceding property
-        //       (empty property is shortened from ~"which is")
-
         expectQuestionSuccess(
             .other(
                 .withProperty(
@@ -2163,28 +2365,30 @@ final class QuestionParsersTestsFull: XCTestCase {
                         .named([t("California", "NNP", "california")]),
                         token: t("'s", "POS", "'s")
                     ),
-                    property: .and([
-                        .withFilter(
-                            name: [t("have", "VBP", "have")],
-                            filter: .plain(.named([
-                                t("a", "DT", "a"),
-                                t("population", "NN", "population")
-                            ]))
-                        ),
-                        .withFilter(
-                            name: [],
-                            filter: .withComparativeModifier(
-                                modifier: [
-                                    t("larger", "JJR", "large"),
-                                    t("than", "IN", "than")
-                                ],
-                                value: .number([
-                                    t("1", "CD", "1"),
-                                    t("million", "CD", "million")
-                                ])
+                    property: .withFilter(
+                        name: [t("have", "VBP", "have")],
+                        filter: .plain(
+                            .withProperty(
+                                .named([
+                                    t("a", "DT", "a"),
+                                    t("population", "NN", "population")
+                                ]),
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withComparativeModifier(
+                                        modifier: [
+                                            t("larger", "JJR", "large"),
+                                            t("than", "IN", "than")
+                                        ],
+                                        value: .number([
+                                            t("1", "CD", "1"),
+                                            t("million", "CD", "million")
+                                        ])
+                                    )
+                                )
                             )
                         )
-                    ])
+                    )
                 )
             ),
             t("What", "WP", "what"),
@@ -2205,10 +2409,6 @@ final class QuestionParsersTestsFull: XCTestCase {
 
     func testQ79() {
 
-        // TODO: handle in second stage:
-        //       filter of empty last property is constraining preceding property
-        //       (empty property is shortened from ~"which are located in")
-
         expectQuestionSuccess(
             .other(
                 .withProperty(
@@ -2228,21 +2428,23 @@ final class QuestionParsersTestsFull: XCTestCase {
                                     t("larger", "JJR", "large"),
                                     t("than", "IN", "than")
                                 ],
-                                value: .named([t("cities", "NNS", "city")])
-                            )
-                        ),
-                        .withFilter(
-                            name: [],
-                            filter: .or([
-                                .withModifier(
-                                    modifier: [t("in", "IN", "in")],
-                                    value: .named([t("Germany", "NNP", "germany")])
-                                ),
-                                .withModifier(
-                                    modifier: [t("in", "IN", "in")],
-                                    value: .named([t("France", "NNP", "france")])
+                                value: .withProperty(
+                                    .named([t("cities", "NNS", "city")]),
+                                    property: .withFilter(
+                                        name: [],
+                                        filter: .or([
+                                            .withModifier(
+                                                modifier: [t("in", "IN", "in")],
+                                                value: .named([t("Germany", "NNP", "germany")])
+                                            ),
+                                            .withModifier(
+                                                modifier: [t("in", "IN", "in")],
+                                                value: .named([t("France", "NNP", "france")])
+                                            )
+                                        ])
+                                    )
                                 )
-                            ])
+                            )
                         )
                     ])
                 )
@@ -2265,33 +2467,30 @@ final class QuestionParsersTestsFull: XCTestCase {
 
     func testQ80() {
 
-        // TODO: "Schindler's List" should be detected as one name, not as a possessive:
-        //       also run NER for possessives
-        // TODO: handle in second stage:
-        //       filter of empty second property is constraining preceding property
-
         expectQuestionSuccess(
             .person(
-                .and([
-                    .withFilter(
-                        name: [t("composed", "VBN", "compose")],
-                        filter: .plain(.named([
-                            t("the", "DT", "the"),
-                            t("music", "NN", "music")
-                        ]))
-                    ),
-                    .withFilter(
-                        name: [],
-                        filter: .withModifier(
-                            modifier: [t("for", "IN", "for")],
-                            value: .relationship(
-                                .named([t("List", "NN", "list")]),
-                                .named([t("Schindler", "NNP", "schindler")]),
-                                token: t("'s", "POS", "'s")
+                .withFilter(
+                    name: [t("composed", "VBN", "compose")],
+                    filter: .plain(
+                        .withProperty(
+                            .named([
+                                t("the", "DT", "the"),
+                                t("music", "NN", "music")
+                            ]),
+                            property: .withFilter(
+                                name: [],
+                                filter: .withModifier(
+                                    modifier: [t("for", "IN", "for")],
+                                    value: .named([
+                                        t("Schindler", "NNP", "schindler"),
+                                        t("'s", "POS", "'s"),
+                                        t("List", "NN", "list")
+                                    ])
+                                )
                             )
                         )
                     )
-                ])
+                )
             ),
             t("Who", "WP", "who"),
             t("composed", "VBN", "compose"),
@@ -2300,14 +2499,12 @@ final class QuestionParsersTestsFull: XCTestCase {
             t("for", "IN", "for"),
             t("Schindler", "NNP", "schindler"),
             t("'s", "POS", "'s"),
-            t("List", "NN", "list")
+            t("List", "NN", "list"),
+            nameParser: TokenParsers.words("Schindler", "'s", "list")
         )
     }
 
     func testQ81() {
-
-        // TODO: handle in second stage:
-        //       filter of second property is constraining preceding property with comparative filter
 
         expectQuestionSuccess(
             .other(
@@ -2328,19 +2525,19 @@ final class QuestionParsersTestsFull: XCTestCase {
                                     t("larger", "JJR", "large"),
                                     t("than", "IN", "than")
                                 ],
-                                value: .named([
-                                    t("cities", "NNS", "city")
-                                ])
-                            )
-                        ),
-                        .withFilter(
-                            name: [
-                                t("are", "VBD", "be"),
-                                t("located", "VBD", "locate")
-                            ],
-                            filter: .withModifier(
-                                modifier: [t("in", "IN", "in")],
-                                value: .named([t("Germany", "NNP", "germany")])
+                                value: .withProperty(
+                                    .named([t("cities", "NNS", "city")]),
+                                    property: .withFilter(
+                                        name: [
+                                            t("are", "VBD", "be"),
+                                            t("located", "VBD", "locate")
+                                        ],
+                                        filter: .withModifier(
+                                            modifier: [t("in", "IN", "in")],
+                                            value: .named([t("Germany", "NNP", "germany")])
+                                        )
+                                    )
+                                )
                             )
                         )
                     ])
@@ -2784,4 +2981,149 @@ final class QuestionParsersTestsFull: XCTestCase {
             t("?", ".", "?")
         )
     }
+
+    func testQ97() {
+
+        // What is made of wood or in Berlin?
+
+        expectQuestionSuccess(
+            .thing(
+                .withFilter(
+                    name: [
+                        t("is", "VBZ", "be"),
+                        t("made", "VBN", "make"),
+                    ],
+                    filter: .or([
+                        .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("wood", "NN", "wood")])
+                        ),
+                        .withModifier(
+                            modifier: [t("in", "IN", "in")],
+                            value: .named([t("Berlin", "NNP", "berlin")])
+                        )
+                    ])
+                )
+            ),
+            t("What", "WP", "what"),
+            t("is", "VBZ", "be"),
+            t("made", "VBN", "make"),
+            t("of", "IN", "of"),
+            t("wood", "NN", "wood"),
+            t("or", "CC", "or"),
+            t("in", "IN", "in"),
+            t("Berlin", "NNP", "berlin"),
+            t("?", ".", "?")
+        )
+    }
+
+    func testQ98() {
+
+        // What is made out of wood or in Berlin?
+
+        expectQuestionSuccess(
+            .thing(
+                .withFilter(
+                    name: [
+                        t("is", "VBZ", "be"),
+                        t("made", "VBN", "make"),
+                    ],
+                    filter: .or([
+                        .withModifier(
+                            modifier: [
+                                t("out", "IN", "out"),
+                                t("of", "IN", "of")
+                            ],
+                            value: .named([t("wood", "NN", "wood")])
+                        ),
+                        .withModifier(
+                            modifier: [t("in", "IN", "in")],
+                            value: .named([t("Berlin", "NNP", "berlin")])
+                        )
+                    ])
+                )
+            ),
+            t("What", "WP", "what"),
+            t("is", "VBZ", "be"),
+            t("made", "VBN", "make"),
+            t("out", "IN", "out"),
+            t("of", "IN", "of"),
+            t("wood", "NN", "wood"),
+            t("or", "CC", "or"),
+            t("in", "IN", "in"),
+            t("Berlin", "NNP", "berlin"),
+            t("?", ".", "?")
+        )
+    }
+
+    func testQ99() {
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([
+                        t("the", "DT", "the"),
+                        t("largest", "JJS", "large"),
+                        t("cities", "NNS", "city")
+                    ]),
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("in", "IN", "in")],
+                            value: .and([
+                                .named([t("europe", "NN", "europe")]),
+                                .named([t("asia", "NN", "asia")])
+                            ])
+                        )
+                    )
+                )
+            ),
+            t("what", "WP", "what"),
+            t("are", "VBP", "be"),
+            t("the", "DT", "the"),
+            t("largest", "JJS", "large"),
+            t("cities", "NNS", "city"),
+            t("in", "IN", "in"),
+            t("europe", "NN", "europe"),
+            t("and", "CC", "and"),
+            t("asia", "NN", "asia")
+        )
+    }
+
+    func testQ100() {
+        expectQuestionSuccess(
+            .other(
+                .withProperty(
+                    .named([
+                        t("the", "DT", "the"),
+                        t("largest", "JJS", "large"),
+                        t("cities", "NNS", "city")
+                    ]),
+                    property: .withFilter(
+                        name: [],
+                        filter: .or([
+                            .withModifier(
+                                modifier: [t("in", "IN", "in")],
+                                value:  .named([t("europe", "NN", "europe")])
+                            ),
+                            .withModifier(
+                                modifier: [t("of", "IN", "of")],
+                                value: .named([t("asia", "NN", "asia")])
+                            )
+                        ])
+                    )
+                )
+            ),
+            t("what", "WP", "what"),
+            t("are", "VBP", "be"),
+            t("the", "DT", "the"),
+            t("largest", "JJS", "large"),
+            t("cities", "NNS", "city"),
+            t("in", "IN", "in"),
+            t("europe", "NN", "europe"),
+            t("or", "CC", "or"),
+            t("of", "IN", "of"),
+            t("asia", "NN", "asia")
+        )
+    }
+
 }

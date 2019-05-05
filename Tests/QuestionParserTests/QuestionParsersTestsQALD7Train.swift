@@ -15,17 +15,23 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("doctoral", "JJ", "doctoral"),
                         t("supervisor", "NN", "supervisor")
                     ]),
-                    .named([
-                        t("Albert", "NNP", "albert"),
-                        t("Einstein", "NNP", "einstein")
-                    ]),
-                    token: t("of", "IN", "of"))
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([
+                                t("Albert", "NNP", "albert"),
+                                t("Einstein", "NNP", "einstein")
+                            ])
+                        )
+                    )
+                )
             ),
             t("Who", "WP", "who"),
             t("was", "VBD", "be"),
@@ -274,13 +280,18 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("capital", "NN", "capital")
                     ]),
-                    .named([t("Cameroon", "NNP", "cameroon")]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("Cameroon", "NNP", "cameroon")])
+                        )
+                    )
                 )
             ),
             t("What", "WP", "what"),
@@ -299,25 +310,27 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
         expectQuestionSuccess(
             .person(
-                .and([
-                    .withFilter(
-                        name: [t("played", "VBD", "play")],
-                        filter: .plain(.named([
-                            t("Gus", "NNP", "gus"),
-                            t("Fring", "NNP", "fring")
-                        ]))
-                    ),
-                    .withFilter(
-                        name: [],
-                        filter: .withModifier(
-                            modifier: [t("in", "IN", "in")],
-                            value: .named([
-                                t("Breaking", "NNP", "break"),
-                                t("Bad", "NNP", "bad")
-                            ])
+                .withFilter(
+                    name: [t("played", "VBD", "play")],
+                    filter: .plain(
+                        .withProperty(
+                            .named([
+                                t("Gus", "NNP", "gus"),
+                                t("Fring", "NNP", "fring")
+                            ]),
+                            property: .withFilter(
+                                name: [],
+                                filter: .withModifier(
+                                    modifier: [t("in", "IN", "in")],
+                                    value: .named([
+                                        t("Breaking", "NNP", "break"),
+                                        t("Bad", "NNP", "bad")
+                                    ])
+                                )
+                            )
                         )
                     )
-                ])
+                )
             ),
             t("Who", "WP", "who"),
             t("played", "VBD", "play"),
@@ -450,13 +463,18 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("president", "NN", "president")
                     ]),
-                    .named([t("Eritrea", "NNP", "eritrea")]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("Eritrea", "NNP", "eritrea")])
+                        )
+                    )
                 )
             ),
             t("Who", "WP", "who"),
@@ -535,13 +553,18 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                             t("belong", "VBP", "belong")
                         ],
                         filter: .plain(
-                            .relationship(
+                            .withProperty(
                                 .named([
                                     t("the", "DT", "the"),
                                     t("mayor", "NN", "mayor")
                                 ]),
-                                .named([t("Paris", "NNP", "paris")]),
-                                token: t("of", "IN", "of")
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withModifier(
+                                        modifier: [t("of", "IN", "of")],
+                                        value: .named([t("Paris", "NNP", "paris")])
+                                    )
+                                )
                             )
                         )
                     )
@@ -569,16 +592,21 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                 .withFilter(
                     name: [t("does", "VBZ", "do")],
                     filter: .plain(
-                        .relationship(
+                        .withProperty(
                             .named(
                                 [t("the", "DT", "the"),
                                  t("voice", "NN", "voice")
                             ]),
-                            .named([
-                                t("Bart", "NNP", "bart"),
-                                t("Simpson", "NNP", "simpson")
-                            ]),
-                            token: t("of", "IN", "of")
+                            property: .withFilter(
+                                name: [],
+                                filter: .withModifier(
+                                    modifier: [t("of", "IN", "of")],
+                                    value: .named([
+                                        t("Bart", "NNP", "bart"),
+                                        t("Simpson", "NNP", "simpson")
+                                    ])
+                                )
+                            )
                         )
                     )
                 )
@@ -596,32 +624,32 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ21() {
 
-        // TODO: improve
-
         // Who composed the soundtrack for Cameron's Titanic?
 
         expectQuestionSuccess(
             .person(
-                .and([
-                    .withFilter(
-                        name: [t("composed", "VBD", "compose")],
-                        filter: .plain(.named([
-                            t("the", "DT", "the"),
-                            t("soundtrack", "NN", "soundtrack")
-                        ]))
-                    ),
-                    .withFilter(
-                        name: [],
-                        filter: .withModifier(
-                            modifier: [t("for", "IN", "for")],
-                            value: .relationship(
-                                .named([t("Titanic", "NNP", "titanic")]),
-                                .named([t("Cameron", "NNP", "cameron")]),
-                                token: t("'s", "POS", "'s")
+                .withFilter(
+                    name: [t("composed", "VBD", "compose")],
+                    filter: .plain(
+                        .withProperty(
+                            .named([
+                                t("the", "DT", "the"),
+                                t("soundtrack", "NN", "soundtrack")
+                            ]),
+                            property: .withFilter(
+                                name: [],
+                                filter: .withModifier(
+                                    modifier: [t("for", "IN", "for")],
+                                    value: .relationship(
+                                        .named([t("Titanic", "NNP", "titanic")]),
+                                        .named([t("Cameron", "NNP", "cameron")]),
+                                        token: t("'s", "POS", "'s")
+                                    )
+                                )
                             )
                         )
                     )
-                ])
+                )
             ),
             t("Who", "WP", "who"),
             t("composed", "VBD", "compose"),
@@ -644,17 +672,22 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                 .withFilter(
                     name: [t("composed", "VBD", "compose")],
                     filter: .plain(
-                        .relationship(
+                        .withProperty(
                             .named([
                                 t("the", "DT", "the"),
                                 t("soundtrack", "NN", "soundtrack")
                             ]),
-                            .relationship(
-                                .named([t("Titanic", "NNP", "titanic")]),
-                                .named([t("Cameron", "NNP", "cameron")]),
-                                token: t("'s", "POS", "'s")
-                            ),
-                            token: t("of", "IN", "of")
+                            property: .withFilter(
+                                name: [],
+                                filter: .withModifier(
+                                    modifier: [t("of", "IN", "of")],
+                                    value: .relationship(
+                                        .named([t("Titanic", "NNP", "titanic")]),
+                                        .named([t("Cameron", "NNP", "cameron")]),
+                                        token: t("'s", "POS", "'s")
+                                    )
+                                )
+                            )
                         )
                     )
                 )
@@ -870,7 +903,7 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                                 .named([
                                     t("Foundation", "NNP", "foundation"),
                                     t("series", "NN", "series")
-                                ]),
+                                    ]),
                                 .named([t("Asimov", "NNP", "asimov")]),
                                 token: t("'s", "POS", "'s")
                             )
@@ -925,17 +958,22 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                             t("in", "IN", "in")
                         ],
                         filter: .plain(
-                            .relationship(
+                            .withProperty(
                                 .named([
                                     t("the", "DT", "the"),
                                     t("headquarters", "NN", "headquarters")
                                 ]),
-                                .named([
-                                    t("the", "DT", "the"),
-                                    t("United", "NNP", "united"),
-                                    t("Nations", "NNP", "nations")
-                                ]),
-                                token: t("of", "IN", "of")
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withModifier(
+                                        modifier: [t("of", "IN", "of")],
+                                        value: .named([
+                                            t("the", "DT", "the"),
+                                            t("United", "NNP", "united"),
+                                            t("Nations", "NNP", "nations")
+                                        ])
+                                    )
+                                )
                             )
                         )
                     )
@@ -970,15 +1008,20 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                             t("in", "IN", "in")
                         ],
                         filter: .plain(
-                            .relationship(
+                            .withProperty(
                                 .named([
                                     t("the", "DT", "the"),
                                     t("president", "NN", "president")
                                 ]),
-                                .named([
-                                    t("Montenegro", "NNP", "montenegro")
-                                ]),
-                                token: t("of", "IN", "of")
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withModifier(
+                                        modifier: [t("of", "IN", "of")],
+                                        value: .named([
+                                            t("Montenegro", "NNP", "montenegro")
+                                        ])
+                                    )
+                                )
                             )
                         )
                     )
@@ -1029,10 +1072,18 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
         expectQuestionSuccess(
             .other(
-                .relationship(
-                    .named([t("the", "DT", "the"), t("mayor", "NN", "mayor")]),
-                    .named([t("Paris", "NNP", "paris")]),
-                    token: t("of", "IN", "of")
+                .withProperty(
+                    .named([
+                        t("the", "DT", "the"),
+                        t("mayor", "NN", "mayor")
+                    ]),
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("Paris", "NNP", "paris")])
+                        )
+                    )
                 )
             ),
             t("Who", "WP", "who"),
@@ -1131,13 +1182,18 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("federal", "JJ", "federal"),
                         t("chancellors", "NNS", "chancellor")
                     ]),
-                    .named([t("Germany", "NNP", "germany")]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([t("Germany", "NNP", "germany")])
+                        )
+                    )
                 )
             ),
             t("Give", "VB", "give"),
@@ -1267,16 +1323,21 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("king", "NN", "king")
                     ]),
-                    .named([
-                        t("the", "DT", "the"),
-                        t("Netherlands", "NNP", "netherlands")
-                    ]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .named([
+                                t("the", "DT", "the"),
+                                t("Netherlands", "NNP", "netherlands")
+                            ])
+                        )
+                    )
                 )
             ),
             t("Who", "WP", "who"),
@@ -1442,21 +1503,31 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("original", "JJ", "original"),
                         t("occupation", "NN", "occupation")
                     ]),
-                    .relationship(
-                        .named([
-                            t("the", "DT", "the"),
-                            t("inventor", "NN", "inventor")
-                        ]),
-                        .named([t("Lego", "NNP", "lego")]),
-                        token: t("of", "IN", "of")
-                    ),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .withProperty(
+                                .named([
+                                    t("the", "DT", "the"),
+                                    t("inventor", "NN", "inventor")
+                                ]),
+                                property: .withFilter(
+                                    name: [],
+                                    filter: .withModifier(
+                                        modifier: [t("of", "IN", "of")],
+                                        value: .named([t("Lego", "NNP", "lego")])
+                                    )
+                                )
+                            )
+                        )
+                    )
                 )
             ),
             t("What", "WP", "what"),
@@ -1714,7 +1785,7 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                         t("space", "NN", "space"),
                         t("probes", "NNS", "probe")]
                     ),
-                    property: .and([
+                    property:
                         .withFilter(
                             name: [
                                 t("were", "VBD", "be"),
@@ -1722,20 +1793,22 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
                             ],
                             filter: .withModifier(
                                 modifier: [t("into", "IN", "into")],
-                                value: .named([t("orbit", "NN", "orbit")])
-                            )
-                        ),
-                        .withFilter(
-                            name: [],
-                            filter: .withModifier(
-                                modifier: [t("around", "IN", "around")],
-                                value: .named([
-                                    t("the", "DT", "the"),
-                                    t("sun", "NN", "sun")
-                                ])
+                                value: .withProperty(
+                                    .named([t("orbit", "NN", "orbit")]),
+                                    property: .withFilter(
+                                        name: [],
+                                        filter: .withModifier(
+                                            modifier: [t("around", "IN", "around")],
+                                            value: .named([
+                                                t("the", "DT", "the"),
+                                                t("sun", "NN", "sun")
+                                            ])
+                                        )
+                                    )
+                                )
                             )
                         )
-                    ])
+
                 )
             ),
             t("Which", "WDT", "which"),
@@ -1882,22 +1955,25 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ64() {
 
-        // TODO: improve. "form of government"
-
         // What form of government does Russia have?
 
         expectQuestionSuccess(
             .other(
-                .relationship(
-                    .named([t("form", "NN", "form")]),
-                    .withProperty(
-                        .named([t("government", "NN", "government")]),
-                        property: .inverseWithFilter(
-                            name: [t("does", "VBZ", "do"), t("have", "VB", "have")],
-                            filter: .plain(.named([t("Russia", "NNP", "russia")]))
-                        )
-                    ),
-                    token: t("of", "IN", "of")
+                .withProperty(
+                    .named([
+                        t("form", "NN", "form"),
+                        t("of", "IN", "of"),
+                        t("government", "NN", "government")
+                    ]),
+                    property: .inverseWithFilter(
+                        name: [
+                            t("does", "VBZ", "do"),
+                            t("have", "VB", "have")
+                        ],
+                        filter: .plain(.named([
+                            t("Russia", "NNP", "russia")
+                        ]))
+                    )
                 )
             ),
             t("What", "WDT", "what"),
@@ -1907,7 +1983,8 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
             t("does", "VBZ", "do"),
             t("Russia", "NNP", "russia"),
             t("have", "VB", "have"),
-            t("?", ".", "?")
+            t("?", ".", "?"),
+            nameParser: TokenParsers.words("form", "of", "government")
         )
     }
 
@@ -2063,16 +2140,21 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
         expectQuestionSuccess(
             .other(
-                .relationship(
+                .withProperty(
                     .named([
                         t("the", "DT", "the"),
                         t("son", "NN", "son")
                     ]),
-                    .and([
-                        .named([t("Sonny", "NNP", "sonny")]),
-                        .named([t("Cher", "NNP", "cher")])
-                    ]),
-                    token: t("of", "IN", "of")
+                    property: .withFilter(
+                        name: [],
+                        filter: .withModifier(
+                            modifier: [t("of", "IN", "of")],
+                            value: .and([
+                                .named([t("Sonny", "NNP", "sonny")]),
+                                .named([t("Cher", "NNP", "cher")])
+                            ])
+                        )
+                    )
                 )
             ),
             t("Who", "WP", "who"),
@@ -2129,28 +2211,26 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
 
     func testQ73() {
 
-        // TODO: improve. "kind of music"
-
         // What kind of music did Lou Reed play?
 
         expectQuestionSuccess(
             .other(
-                .relationship(
-                    .named([t("kind", "NN", "kind")]),
-                    .withProperty(
-                        .named([t("music", "NN", "music")]),
-                        property: .inverseWithFilter(
-                            name: [
-                                t("did", "VBD", "do"),
-                                t("play", "VB", "play")
-                            ],
-                            filter: .plain(.named([
-                                t("Lou", "NNP", "lou"),
-                                t("Reed", "NNP", "reed")
-                            ]))
-                        )
-                    ),
-                    token: t("of", "IN", "of")
+                .withProperty(
+                    .named([
+                        t("kind", "NN", "kind"),
+                        t("of", "IN", "of"),
+                        t("music", "NN", "music")
+                    ]),
+                    property: .inverseWithFilter(
+                        name: [
+                            t("did", "VBD", "do"),
+                            t("play", "VB", "play")
+                        ],
+                        filter: .plain(.named([
+                            t("Lou", "NNP", "lou"),
+                            t("Reed", "NNP", "reed")
+                        ]))
+                    )
                 )
             ),
             t("What", "WDT", "what"),
@@ -2161,7 +2241,8 @@ final class QuestionParsersTestsQALD7Train: XCTestCase {
             t("Lou", "NNP", "lou"),
             t("Reed", "NNP", "reed"),
             t("play", "VB", "play"),
-            t("?", ".", "?")
+            t("?", ".", "?"),
+            nameParser: TokenParsers.words("kind", "of", "music")
         )
     }
 

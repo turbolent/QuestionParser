@@ -63,8 +63,8 @@ final class QuestionParsersTestsPartial: XCTestCase {
                       t("couple", "NN", "couple"))
     }
 
-    func testNamedValue() {
-        let p = QuestionParsers.namedValue
+    func testNamedValues() {
+        let p = QuestionParsers.namedValues
 
         expectSuccess(p,
                       .named([
@@ -103,6 +103,22 @@ final class QuestionParsersTestsPartial: XCTestCase {
                       t("the", "DT", "the"),
                       t("19th", "JJ", "19th"),
                       t("century", "NN", "century"))
+
+        expectSuccess(p,
+                      .relationship(
+                          .named([t("mothers", "NNS", "mother")]),
+                          .relationship(
+                              .named([t("children", "NNS", "child")]),
+                              .named([t("Obama", "NNP", "obama")]),
+                              token: t("'s", "POS", "'s")
+                          ),
+                          token: t("'s", "POS", "'s")
+                      ),
+                      t("Obama", "NNP", "obama"),
+                      t("'s", "POS", "'s"),
+                      t("children", "NNS", "child"),
+                      t("'s", "POS", "'s"),
+                      t("mothers", "NNS", "mother"))
     }
 
     func testNumericValue() {
@@ -151,26 +167,6 @@ final class QuestionParsersTestsPartial: XCTestCase {
                       t("2", "CD", "2"),
                       t("million", "CD", "million"),
                       t("inhabitants", "NNS", "inhabitant"))
-    }
-
-    func testNamedValues() {
-        let p = QuestionParsers.namedValues
-
-        expectSuccess(p,
-                      .relationship(
-                          .named([t("mothers", "NNS", "mother")]),
-                          .relationship(
-                              .named([t("children", "NNS", "child")]),
-                              .named([t("Obama", "NNP", "obama")]),
-                              token: t("'s", "POS", "'s")
-                          ),
-                          token: t("'s", "POS", "'s")
-                      ),
-                      t("Obama", "NNP", "obama"),
-                      t("'s", "POS", "'s"),
-                      t("children", "NNS", "child"),
-                      t("'s", "POS", "'s"),
-                      t("mothers", "NNS", "mother"))
     }
 
     func testFilter() {
@@ -255,8 +251,8 @@ final class QuestionParsersTestsPartial: XCTestCase {
                       t("1910", "CD", "1910"))
     }
 
-    func testProperty() {
-        let p = QuestionParsers.property
+    func testInitialProperty() {
+        let p = QuestionParsers.initialProperty
 
         expectSuccess(p,
                       .named([t("died", "VBD", "die")]),
@@ -351,8 +347,8 @@ final class QuestionParsersTestsPartial: XCTestCase {
                       t("in", "IN", "in"))
     }
 
-    func testProperties() {
-        let p = QuestionParsers.properties
+    func testInitialProperties() {
+        let p = QuestionParsers.initialProperties
 
         expectSuccess(p,
                       .or([
@@ -486,8 +482,8 @@ final class QuestionParsersTestsPartial: XCTestCase {
                       t("Japan", "NNP", "japan"))
     }
 
-    func testQueryPossessiveRelationships() {
-        let p = QuestionParsers.queryPossessiveRelationships
+    func testQueryRelationship() {
+        let p = QuestionParsers.queryRelationship
 
         expectSuccess(p,
                       .named([t("Clinton", "NNP", "clinton")]),
@@ -562,10 +558,17 @@ final class QuestionParsersTestsPartial: XCTestCase {
                       t("that", "WDT", "that"))
 
         expectSuccess(p,
-                      .relationship(
-                          .named([t("cities", "NNS", "city")]),
-                          .named([t("California", "NNP", "california")]),
-                          token: t("of", "IN", "of")
+                       .withProperty(
+                            .named([t("cities", "NNS", "city")]),
+                            property: .withFilter(
+                                name: [],
+                                filter: .withModifier(
+                                    modifier: [t("of", "IN", "of")],
+                                    value: .named([
+                                        t("California", "NNP", "california")
+                                    ])
+                                )
+                            )
                       ),
                       t("cities", "NNS", "city"),
                       t("of", "IN", "of"),
@@ -582,13 +585,18 @@ final class QuestionParsersTestsPartial: XCTestCase {
                       t("cities", "NNS", "city"))
 
         expectSuccess(p,
-                      .relationship(
-                          .named([t("population", "NN", "population")]),
-                          .named([
-                              t("the", "DT", "the"),
-                              t("USA", "NNP", "usa")
-                          ]),
-                          token: t("of", "IN", "of")
+                      .withProperty(
+                            .named([t("population", "NN", "population")]),
+                            property: .withFilter(
+                                name: [],
+                                filter: .withModifier(
+                                    modifier: [t("of", "IN", "of")],
+                                    value: .named([
+                                        t("the", "DT", "the"),
+                                        t("USA", "NNP", "usa")
+                                    ])
+                                )
+                            )
                       ),
                       t("population", "NN", "population"),
                       t("of", "IN", "of"),
