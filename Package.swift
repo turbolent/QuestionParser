@@ -11,7 +11,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/turbolent/ParserCombinators.git", from: "0.5.3"),
+        .package(url: "https://github.com/turbolent/ParserCombinators.git", from: "0.5.5"),
         .package(url: "https://github.com/turbolent/DiffedAssertEqual.git", from: "0.2.0"),
     ],
     targets: [
