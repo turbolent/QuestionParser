@@ -111,7 +111,18 @@ public struct QuestionParsers {
         POS.determiner ~ adjectives
 
     public static let named: Parser<[Token], Token> =
-        nounsNamed
+        Parser { input in
+            if let tokenReader = input as? QuestionReader {
+                return More {
+                    tokenReader.nameParser.step(input)
+                }
+            }
+            return Done(ParseResult.failure(
+                message: "name parser not available",
+                remaining: input
+            ))
+        }
+        || nounsNamed
         || adjectiveNamed
 
     public static let simpleNamedValue: Parser<Value, Token> =

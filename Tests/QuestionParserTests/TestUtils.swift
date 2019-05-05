@@ -13,12 +13,16 @@ func t(_ word: String, _ tag: String, _ lemma: String) -> Token {
 private func parse<T>(
     parser: Parser<T, Token>,
     input: [Token],
-    usePackratReader: Bool = false
+    usePackratReader: Bool = false,
+    nameParser: Parser<[Token], Token>? = nil
 )
     -> ParseResult<T, Token>
 {
     var reader: Reader<Token> =
-        CollectionReader(collection: input)
+        QuestionReader(
+            collection: input,
+            nameParser: nameParser ?? failure("not available")
+        )
     if usePackratReader {
         reader = PackratReader(underlying: reader)
     }
@@ -30,6 +34,7 @@ func expectSuccess<T>(
     input: [Token],
     expected: T,
     usePackratReader: Bool = false,
+    nameParser: Parser<[Token], Token>? = nil,
     file: StaticString = #file,
     line: UInt = #line
 )
@@ -38,7 +43,8 @@ func expectSuccess<T>(
     let result = parse(
         parser: parser,
         input: input,
-        usePackratReader: usePackratReader
+        usePackratReader: usePackratReader,
+        nameParser: nameParser
     )
     switch result {
     case .success(let actual, _):
@@ -48,6 +54,9 @@ func expectSuccess<T>(
             file: file,
             line: line
         )
+        if expected != actual {
+            print(actual)
+        }
     case .failure, .error:
         XCTFail(
             String(describing: result),
@@ -61,6 +70,7 @@ func expectSuccess<T>(
     parser: Parser<T, Token>,
     input: [Token],
     usePackratReader: Bool = false,
+    nameParser: Parser<[Token], Token>? = nil,
     file: StaticString = #file,
     line: UInt = #line
 )
@@ -69,7 +79,8 @@ func expectSuccess<T>(
     let result = parse(
         parser: parser,
         input: input,
-        usePackratReader: usePackratReader
+        usePackratReader: usePackratReader,
+        nameParser: nameParser
     )
     switch result {
     case .success:
@@ -88,6 +99,7 @@ func expectSuccess<T>(
     input: [Token],
     expected: T?,
     usePackratReader: Bool = false,
+    nameParser: Parser<[Token], Token>? = nil,
     file: StaticString = #file,
     line: UInt = #line
 )
@@ -96,7 +108,8 @@ func expectSuccess<T>(
     let result = parse(
         parser: parser,
         input: input,
-        usePackratReader: usePackratReader
+        usePackratReader: usePackratReader,
+        nameParser: nameParser
     )
     switch result {
     case .success(let actual, _):
@@ -120,6 +133,7 @@ func expectSuccess<T>(
     input: [Token],
     expected: [T],
     usePackratReader: Bool = false,
+    nameParser: Parser<[Token], Token>? = nil,
     file: StaticString = #file,
     line: UInt = #line
 )
@@ -128,7 +142,8 @@ func expectSuccess<T>(
     let result = parse(
         parser: parser,
         input: input,
-        usePackratReader: usePackratReader
+        usePackratReader: usePackratReader,
+        nameParser: nameParser
     )
     switch result {
     case .success(let actual, _):
@@ -152,13 +167,15 @@ func expectFailure<T>(
     input: [Token],
     message: String? = nil,
     usePackratReader: Bool = false,
+    nameParser: Parser<[Token], Token>? = nil,
     file: StaticString = #file,
     line: UInt = #line
 ) {
     let result = parse(
         parser: parser,
         input: input,
-        usePackratReader: usePackratReader
+        usePackratReader: usePackratReader,
+        nameParser: nameParser
     )
     switch result {
     case .success:
@@ -191,13 +208,15 @@ func expectError<T>(
     input: [Token],
     message: String? = nil,
     usePackratReader: Bool = false,
+    nameParser: Parser<[Token], Token>? = nil,
     file: StaticString = #file,
     line: UInt = #line
 ) {
     let result = parse(
         parser: parser,
         input: input,
-        usePackratReader: usePackratReader
+        usePackratReader: usePackratReader,
+        nameParser: nameParser
     )
     switch result {
     case .success:
@@ -235,6 +254,7 @@ func expectSuccess<T: Equatable>(
     _ parser: Parser<T, Token>,
     _ expected: T,
     _ tokens: Token...,
+    nameParser: Parser<[Token], Token>? = nil,
     file: StaticString = #file,
     line: UInt = #line
 ) {
@@ -242,6 +262,7 @@ func expectSuccess<T: Equatable>(
         parser,
         expected,
         tokens,
+        nameParser: nameParser,
         file: file,
         line: line
     )
@@ -251,6 +272,7 @@ func expectSuccess<T: Equatable>(
     _ parser: Parser<T, Token>,
     _ expected: T,
     _ tokens: [Token],
+    nameParser: Parser<[Token], Token>? = nil,
     file: StaticString = #file,
     line: UInt = #line
 ) {
@@ -258,6 +280,7 @@ func expectSuccess<T: Equatable>(
         parser: parser,
         input: tokens,
         expected: expected,
+        nameParser: nameParser,
         file: file,
         line: line
     )
@@ -266,6 +289,7 @@ func expectSuccess<T: Equatable>(
 func expectQuestionSuccess(
     _ expectedQuestion: ListQuestion,
     _ tokens: Token...,
+    nameParser: Parser<[Token], Token>? = nil,
     file: StaticString = #file,
     line: UInt = #line
 ) {
@@ -273,6 +297,7 @@ func expectQuestionSuccess(
         QuestionParsers.question <~ endOfInput(),
         expectedQuestion,
         QuestionParsers.rewrite(tokens: tokens),
+        nameParser: nameParser,
         file: file,
         line: line
     )
